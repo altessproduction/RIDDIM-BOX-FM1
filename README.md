@@ -2,9 +2,9 @@
 
 **RIDDIM BOX** — firmware reggae/dub génératif pour le **M-VAVE FM-1**, exécutable ici même dans votre navigateur, installable sur la vraie machine.
 
-## Ouvrir l'émulateur
+## ▶ Ouvrir l'émulateur
 
-**[Lancer RIDDIM BOX dans le navigateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/)** — la page d'accueil de ce dépôt ouvre directement l'émulateur avec le firmware chargé. En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
+**[▶ Ouvrir l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/demo/emulator/)** — RIDDIM BOX se lance directement dans le navigateur, firmware chargé automatiquement. *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
 
 ![RIDDIM BOX dans l'émulateur FM-1](docs/img/browser-emu-play.png)
 
@@ -29,7 +29,28 @@ Démarrage : bouton **Start** → clavier du PC (`A`…`'` = C4–F5, `Z`/`X` = 
 |---|---|
 | ![HOME à l'arrêt](docs/img/browser-emu-home.png) | ![HOME en lecture](docs/img/browser-emu-play.png) |
 
-> **Note performances** : l'horloge émulée est réglable de 60 à 240 MHz (vitesse réelle : 240 MHz). Sur un ordinateur portable récent, l'émulateur tourne plus vite que le temps réel. Sur une machine lente, le son se hache : baisser l'horloge n'aide pas (le firmware utilise le temps d'inactivité), il faut une machine plus rapide — ou la version plugin desktop de fm1-emu.
+> **Note performances** : l'horloge émulée est réglable de 60 à 240 MHz (vitesse réelle : 240 MHz). Sur un ordinateur portable récent, l'émulateur tourne plus vite que le temps réel. Sur une machine lente, le son se hache : baisser l'horloge n'aide pas (le firmware utilise le temps d'inactivité), il faut une machine plus rapide — voir la section **[Émulateur sur votre PC](#émulateur-sur-votre-pc--quelle-version-choisir)** plus bas.
+
+---
+
+## Émulateur sur votre PC — quelle version choisir ?
+
+RIDDIM BOX est le firmware le plus lourd du catalogue FM-1 (deux cœurs PI32v2 quasi saturés à 240 MHz). L'émulateur navigateur (JIT WebAssembly) demande l'équivalent d'environ **deux cœurs de processeur modernes** pour le faire tourner en temps réel. Options mesurées :
+
+| Version | PC récent (2 cœurs modernes+) | PC ancien 4 cœurs / 8 Go | Remarques |
+|---|---|---|---|
+| **Navigateur** (cette page) | temps réel (~1–2×) | ~0,3× — son haché | le plus simple ; fermer les DevTools (ils ralentissent ×3–4), bouton « audio buffer » plus grand si proposé |
+| **fm1-live** desktop natif 0.5.0 | interface partout, audio temps réel sur machine rapide | interface ok, audio haché | **pas encore de JIT x86-64** (interpréteur ¼–½ de la vitesse JIT ; JIT annoncé pour la 0.6) |
+| **FM-1.vst3 / FM-1.clap** (plugin DAW) | temps réel en DAW sur machine rapide | non | même moteur que fm1-live |
+| **fm1-emu** (batch, hors ligne) | génère WAV + captures BMP hors ligne | possible mais lent (~0,01× sur serveur rapide) | pour produire un fichier audio sans jouer en direct |
+| **La vraie pédale FM-1** | 240 MHz natifs, aucune limite | — | la voie garantie : `firmware/RIDDIM_BOX_update.html` |
+
+**Concrètement :**
+- **PC modeste** : l'interface se teste intégralement (écran, 10 pages, lion, touches, MIDI) ; pour **entendre** la musique en temps réel, utilisez une machine récente, un **smartphone récent** (Chrome Android fait tourner l'émulateur web) ou flashez la vraie pédale.
+- **fm1-live / plugin** (MIT, [fm1-emu 0.5.0](https://github.com/joakimeriksson/fm1-emu/releases)) : [fm1-plugin-0.5.0-windows-x86_64.zip](https://github.com/joakimeriksson/fm1-emu/releases/download/v0.5.0/fm1-plugin-0.5.0-windows-x86_64.zip) — SHA-256 `de683f4469a27e17c210d12b0a82e84776c38777c09bf3998da75d8c21de0bf2` (contient `FM-1.vst3`, `FM-1.clap` et `INSTALL.txt`) ; builds standalone Linux/macOS : `fm1-emu-0.5.0-*.tar.gz`. Testé ici avec ce firmware : `./fm1-live --fwsc RIDDIM_BOX.fwsc`.
+- **Rendu audio hors ligne** (fm1-emu batch) : `./fm1-emu --fwsc RIDDIM_BOX.fwsc --ms 60000 --keys '2600-2650:pot:900,3000-3100:PLAY' --wav demo.wav --snap 5000,30000` — produit 60 s de musique et deux captures de l'écran, sans jouer en direct.
+
+![fm1-live desktop (Linux) exécutant le firmware RIDDIM BOX](docs/img/fm1live-desktop.png)
 
 ---
 
