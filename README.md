@@ -2,15 +2,17 @@
 
 **RIDDIM BOX** — firmware reggae/dub génératif pour le **M-VAVE FM-1**, exécutable ici même dans votre navigateur, installable sur la vraie machine.
 
-## ▶ Ouvrir l'émulateur
+## ▶ Ouvrir l'émulateur · ▶ Installer sur la pédale
 
-**[▶ Ouvrir l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/demo/emulator/)** — RIDDIM BOX se lance directement dans le navigateur, firmware chargé automatiquement. *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
+**[▶ Ouvrir l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/demo/emulator/)** — RIDDIM BOX se lance directement dans le navigateur, firmware chargé automatiquement.
+
+**[▶ Installer RIDDIM BOX sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html)** — page d'installation en un clic (Chrome ou Edge, pédale connectée en USB ; procédure complète plus bas). *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
 
 ![RIDDIM BOX dans l'émulateur FM-1](docs/img/browser-emu-play.png)
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
-SHA-256 : `84993f719b74372ccd32ed71a023a9abcb6629cc92d8278243f22fb9551daa54`
-Page d'installation : `firmware/RIDDIM_BOX_update.html` — SHA-256 `83860d8965bad6ee575b13ffcd70be3e4bf55f2f16e2afe5db152f46a8deb534`
+SHA-256 : `aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894`
+Page d'installation : [**▶ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html) — SHA-256 `e3423e12db9551a03fd7eedf4ac8b1da9013cc9d3c48a422705d853829641d81`
 
 ---
 
@@ -43,7 +45,7 @@ RIDDIM BOX est le firmware le plus lourd du catalogue FM-1 (deux cœurs PI32v2 q
 | **fm1-live** desktop natif 0.5.0 | interface partout, audio temps réel sur machine rapide | interface ok, audio haché | **pas encore de JIT x86-64** (interpréteur ¼–½ de la vitesse JIT ; JIT annoncé pour la 0.6) |
 | **FM-1.vst3 / FM-1.clap** (plugin DAW) | temps réel en DAW sur machine rapide | non | même moteur que fm1-live |
 | **fm1-emu** (batch, hors ligne) | génère WAV + captures BMP hors ligne | possible mais lent (~0,01× sur serveur rapide) | pour produire un fichier audio sans jouer en direct |
-| **La vraie pédale FM-1** | 240 MHz natifs, aucune limite | — | la voie garantie : `firmware/RIDDIM_BOX_update.html` |
+| **La vraie pédale FM-1** | 240 MHz natifs, aucune limite | — | la voie garantie : [▶ Installer sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html) |
 
 **Concrètement :**
 - **PC modeste** : l'interface se teste intégralement (écran, 10 pages, lion, touches, MIDI) ; pour **entendre** la musique en temps réel, utilisez une machine récente, un **smartphone récent** (Chrome Android fait tourner l'émulateur web) ou flashez la vraie pédale.
@@ -157,7 +159,7 @@ Interface vert-jaune-rouge, tout est accessible sans menu profond : pages naviga
 
 Le workbench en ligne de M-VAVE (<https://open.m-vave.com/fm1-workbench>) **n'accepte pas les `.fwsc` tiers**. L'installation passe par la page hors-ligne incluse :
 
-1. Ouvrir `firmware/RIDDIM_BOX_update.html` dans **Chrome ou Edge** (page autonome, firmware embarqué) ;
+1. Ouvrir la **[page d'installation en ligne](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html)** dans **Chrome ou Edge** — un clic depuis ce README, rien à télécharger (page autonome, firmware embarqué). Hors connexion : télécharger `firmware/RIDDIM_BOX_update.html` et l'ouvrir en double-clic ;
 2. Connecter le FM-1 en USB, suivre le protocole officiel : **« Force flash »** depuis le firmware d'usine V15 ;
 3. Le transfert utilise le protocole USB-MIDI officiel avec **vérification CRC** et contrôle de version après redémarrage ; un échec laisse la machine bootable ;
 4. **Retour arrière possible** : la page embarque aussi la V15 d'origine pour revenir au firmware M-VAVE.
@@ -166,7 +168,7 @@ Vérifier l'empreinte avant installation :
 
 ```bash
 sha256sum RIDDIM_BOX.fwsc
-# 84993f719b74372ccd32ed71a023a9abcb6629cc92d8278243f22fb9551daa54
+# aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894
 ```
 
 Le chargeur d'updates (`ota.bin`, `uboot.boot`, `boot-config.bin`) reste inchangé, octet pour octet, celui du SDK officiel. La polarité du MIDI TRS n'est pas documentée par le constructeur (voir audit).
