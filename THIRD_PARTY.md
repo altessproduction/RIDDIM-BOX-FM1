@@ -4,6 +4,7 @@
 - **JieLi Windows toolchain 2.5.3** (PI32v2 clang 4.0.1) — downloaded from JieLi, verified against the SDK manifest; not redistributed.
 - **fm1-emu** — `joakimeriksson/fm1-emu` @ `eb0d897` (MIT, © 2026 Joakim Eriksson). Used for native verification (Node) and copied unmodified into `demo/emulator/` with its license (`LICENSE-fm1-emu.txt`); `firmwares.json` there is our own one-entry catalog.
 - **TinyCC 0.9.27** (LGPL) — host test compiler, downloaded, not redistributed.
+- **Données et lecteur Riddims** (`riddims.html`, `riddims-data.js`) — données copiées à l'identique du fichier généré de la page [Riddim-collection](https://altessproduction.github.io/Riddim-collection/riddims.html) (Altess Production, GPL-3.0, base générée le 2026-11-16 ; « The Riddim Real Book (Tab) », pack « RIDDIM MIDI » et Sleng Teng) ; synthé Web Audio, séquenceur 64 pas et écriture MIDI adaptés du même dépôt (GPL-3.0). Enregistrements : aucun, tout est synthétisé.
 - **Lion artwork** — supplied by the user (see `assets/lion/README.md`); the user's rights apply.
 - **Samples** — none. All sounds are synthesized (DX7-format FM, Karplus-Strong, 303, 808, PSG engines of the SDK and RIDDIM's own DSP). No recordings or copyrighted songs are included.
 - **References consulted only** (no code copied): JIANT (juanjiant-bit), Felucca (hugelton), fm1-dev-wiki (sbegueria, CC BY-SA 4.0), public Alesis Vortex Wireless 2 user/editor guides.

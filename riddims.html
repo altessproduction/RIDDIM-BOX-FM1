@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIDDIM BOX FM-1 · Riddims — les 75 boucles de 64 pas</title>
+<meta name="description" content="Les 75 riddims du Riddim Real Book, du pack « RIDDIM MIDI » et de Sleng Teng : boucles de 64 pas qui tournent en continu, écoutables ici et jouables sur votre FM-1 via MIDI.">
+<meta property="og:title" content="RIDDIM BOX · Riddims — 75 boucles de 64 pas">
+<meta property="og:description" content="Boucles de 64 pas, batterie + basse + accompagnement, écoute Web Audio et jeu sur la pédale FM-1 en MIDI.">
+<style>
+/* Palette et langage du site RIDDIM BOX (cf. demo/emulator/style.css) */
+:root { --room:#18191b; --ink:#e9e6de; --dim:#a9a7a1; --faint:#8c8a85; --text:#c9c6be;
+        --amber:#f2a33a; --amber-hi:#ffc56e; --green:#7cc48a; --well:#232427; --line:#3a3b3f;
+        --rule:#2a2b2e; --card:#1e1f22; --bar:#161719; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin:0; background:var(--room); color:var(--ink);
+  font:14px/1.5 system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+a { color:var(--amber-hi); text-decoration:none; }
+a:hover { color:#fff; }
+code, .mono { font:600 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+header.site { display:flex; align-items:center; gap:14px; padding:14px 20px;
+  border-bottom:1px solid var(--rule); background:var(--bar); flex-wrap:wrap; }
+.logo { width:30px; height:30px; border-radius:8px; background:var(--amber); color:#2a1a03;
+  display:grid; place-items:center; font-weight:800; flex:none; }
+header h1 { font-size:17px; margin:0; letter-spacing:.3px; }
+header .sub { margin:1px 0 0; color:var(--dim); font-size:12.5px; }
+header nav { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+header nav a, .btn { font:inherit; font-size:13px; color:var(--ink); background:var(--well);
+  border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; }
+header nav a:hover, .btn:hover { background:var(--rule); }
+.btn.primary { background:var(--amber); border-color:var(--amber); color:#2a1a03; font-weight:600; }
+.btn.primary:hover { background:var(--amber-hi); border-color:var(--amber-hi); color:#2a1a03; }
+.btn:disabled { opacity:.45; cursor:default; }
+
+main { max-width:1080px; margin:0 auto; padding:20px 20px 40px; }
+.panel { background:var(--card); border:1px solid var(--rule); border-radius:14px; padding:14px 16px; margin-bottom:18px; }
+.panel h2 { font-size:14px; margin:0 0 10px; color:var(--ink); }
+.panel h2 small { color:var(--dim); font-weight:400; }
+
+/* --- panneau séquenceur 64 pas --- */
+.gridhead { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+#grid-name { font-size:18px; font-weight:700; }
+#grid-meta { color:var(--dim); font-size:12.5px; }
+#grid-status { margin-left:auto; color:var(--dim); font-size:12.5px; min-height:1.2em; }
+.seq { display:flex; flex-direction:column; gap:3px; overflow-x:auto; padding-bottom:2px; }
+.seqrow { display:flex; align-items:center; gap:8px; min-width:640px; }
+.seqrow .lbl { width:108px; flex:none; color:var(--dim); font-size:11.5px; text-align:right; }
+.bars { display:flex; gap:7px; flex:1; }
+.stepbar { flex:1; display:grid; grid-template-columns:repeat(16, 1fr); gap:2px; }
+.cell { aspect-ratio:1.55; background:var(--well); border-radius:2.5px; border:1px solid transparent; }
+.cell.on { background:var(--amber); }
+.cell.on.soft { background:#8a5f22; }
+.cell.on.long { background:var(--amber-hi); }
+.cell.ph { border-color:var(--ink); background:var(--faint); }
+.cell.on.ph { background:#fff; }
+.seqrow.bass .lbl { color:var(--ink); font-weight:600; }
+.legend { color:var(--faint); font-size:11.5px; margin-top:8px; }
+.transport { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px;
+  border-top:1px solid var(--rule); padding-top:12px; }
+.transport label { color:var(--dim); font-size:12.5px; display:flex; align-items:center; gap:6px; }
+.transport input[type=number], .transport select, select { font:inherit; font-size:13px; color:var(--ink);
+  background:var(--well); border:1px solid var(--line); border-radius:7px; padding:5px 8px; }
+input[type=number] { width:74px; }
+
+/* --- panneau MIDI --- */
+.midipanel .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.midipanel label { display:flex; align-items:center; gap:6px; color:var(--text); font-size:13px; }
+.midipanel label.dim { color:var(--dim); }
+#midi-dot { width:9px; height:9px; border-radius:50%; background:var(--line); flex:none; }
+#midi-dot.on { background:var(--amber); }
+#midi-name { color:var(--dim); font-size:12.5px; }
+.note { color:var(--faint); font-size:12px; margin-top:8px; }
+
+/* --- liste --- */
+.listhead { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+#q { flex:1; min-width:220px; font:inherit; font-size:14px; color:var(--ink); background:var(--well);
+  border:1px solid var(--line); border-radius:8px; padding:7px 11px; }
+#count { color:var(--dim); font-size:12.5px; }
+#filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+#filters .btn.on { background:var(--line); border-color:var(--dim); font-weight:600; }
+#cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(310px, 1fr)); gap:12px; }
+.card { background:var(--card); border:1px solid var(--rule); border-radius:12px; padding:12px 14px; }
+.card.play { border-color:var(--amber); background:#241f14; }
+.card .name { font-weight:700; font-size:15px; }
+.card .aka { color:var(--dim); font-size:12.5px; margin-left:6px; }
+.chips { display:flex; gap:5px; flex-wrap:wrap; margin:7px 0; }
+.chip { font-size:11px; color:var(--ink); background:var(--well); border:1px solid var(--line);
+  border-radius:999px; padding:2px 9px; }
+.chip.dim { color:var(--dim); }
+.chip.steps { color:var(--amber-hi); border-color:#4a3a1e; }
+.chords { color:var(--text); font-size:12px; margin:4px 0 8px; }
+.acts { display:flex; gap:6px; flex-wrap:wrap; }
+.acts .btn { padding:4px 10px; font-size:12.5px; border-radius:7px; }
+.status { min-height:1.3em; color:var(--dim); font-size:12.5px; margin:10px 2px 0; }
+.status.err { color:#e0704f; }
+
+footer.site { border-top:1px solid var(--rule); background:var(--bar); color:var(--dim);
+  font-size:12.5px; padding:14px 20px; }
+footer.site a { color:var(--amber-hi); }
+@media (max-width:680px) { header nav { margin-left:0; } .seqrow .lbl { width:88px; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="logo" aria-hidden="true">R</div>
+  <div>
+    <h1>RIDDIM BOX · Riddims</h1>
+    <p class="sub">Les 75 riddims du Riddim Real Book, du pack « RIDDIM MIDI » et de Sleng Teng — boucles de 64 pas qui tournent en continu, ici ou sur votre FM-1.</p>
+  </div>
+  <nav>
+    <a href="demo/emulator/">Émulateur</a>
+    <a href="firmware/RIDDIM_BOX_update.html?lang=fr#update">Installer sur votre FM-1</a>
+    <a href="https://altessproduction.github.io/Riddim-collection/riddims.html">Collection ↗</a>
+  </nav>
+</header>
+
+<main>
+  <section class="panel" id="seqpanel">
+    <div class="gridhead">
+      <span id="grid-name">Séquenceur 64 pas</span>
+      <span id="grid-meta">choisissez un riddim ci-dessous</span>
+      <span id="grid-status"></span>
+    </div>
+    <div class="seq" id="seq"></div>
+    <div class="legend">Grille en doubles-croches — 16 pas par mesure, 4 mesures = <b>64 pas</b> en boucle. Les pas accentués (1<sup>er</sup> et 9<sup>e</sup>) sont plus brillants ; la colonne claire est la position de lecture.</div>
+    <div class="transport">
+      <button class="btn primary" id="btn-play" type="button">▶ Écouter</button>
+      <button class="btn" id="btn-stop" type="button" disabled>■ Stop</button>
+      <label>Tempo <input id="bpm" type="number" min="40" max="220" step="1" value="75"> BPM</label>
+      <label>Transposition
+        <select id="tr">
+          <option value="-24">−24</option><option value="-12">−12</option>
+          <option value="0" selected>0</option>
+          <option value="12">+12</option><option value="24">+24</option>
+        </select> demi-tons
+      </label>
+    </div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="panel midipanel">
+    <h2>MIDI vers votre FM-1 <small>— la pédale (ou l'émulateur) joue la boucle sur son propre moteur de son</small></h2>
+    <div class="row">
+      <label class="dim">Sortie <select id="midi-out"><option value="">— aucune —</option></select></label>
+      <button class="btn" id="midi-refresh" type="button" title="Rafraîchir la liste des sorties">↻</button>
+      <label>Canal
+        <select id="midi-ch"><option value="0" selected>1</option><option value="1">2</option><option value="2">3</option><option value="3">4</option><option value="4">5</option><option value="5">6</option><option value="6">7</option><option value="7">8</option><option value="8">9</option><option value="9">10</option><option value="10">11</option><option value="11">12</option><option value="12">13</option><option value="13">14</option><option value="14">15</option><option value="15">16</option></select>
+      </label>
+      <label><input type="checkbox" id="midi-send" checked> Envoyer la basse et l'accompagnement</label>
+      <label><input type="checkbox" id="midi-drums"> Batterie GM (canal 10)</label>
+      <span id="midi-dot" aria-hidden="true"></span>
+      <span id="midi-name"></span>
+    </div>
+    <p class="note">Branchez la FM-1 en USB (Chrome/Edge), choisissez sa sortie « USB-Midi » puis lancez l'écoute : la basse et le skank sont rejoués en direct par la pédale, en boucle, transposés comme dans le séquenceur. La batterie Web Audio reste locale sauf si « Batterie GM » est coché.</p>
+  </section>
+
+  <section class="panel">
+    <div class="listhead">
+      <input id="q" type="search" placeholder="Chercher un riddim, un label, des accords…" aria-label="Recherche">
+      <span id="count"></span>
+    </div>
+    <div id="filters"></div>
+    <div id="cards"></div>
+    <p class="status" id="list-status"></p>
+  </section>
+</main>
+
+<footer class="site">
+  RIDDIM BOX FM-1 · Données et lecteur adaptés de la <a href="https://altessproduction.github.io/Riddim-collection/riddims.html">page Riddims de la collection</a> (Altess Production, GPL-3.0) — base générée le 2026-11-16.
+  <a href="demo/emulator/">Émulateur</a> · <a href="firmware/RIDDIM_BOX_update.html?lang=fr#update">Installer sur votre FM-1</a>
+</footer>
+
+<script src="riddims-data.js"></script>
+<script>
+"use strict";
+/* ===================================================================== */
+/*  RIDDIM BOX FM-1 · Riddims                                            */
+/*  Données : riddims-data.js (copie conforme du fichier généré de la    */
+/*  collection RIDDIM, « ne pas éditer à la main : régénérer »).         */
+/*  Lecteur, export MIDI et sortie FM-1 adaptés de la page Riddims       */
+/*  (Altess Production, GPL-3.0).                                        */
+/*  Grille : doubles-croches, 16 pas par mesure. Boucle normalisée à     */
+/*  4 mesures = 64 pas ; les compositions plus longues (riddims multi-   */
+/*  phrases) tournent en boucle sur leur longueur complète.              */
+/* ===================================================================== */
+window.RIDDIM_CORE = (() => {
+  const LANES = ["k", "s", "hc", "hcg", "ho", "rm"];
+  const LANE_LABEL = { k: "Grosse caisse", s: "Caisse claire", hc: "Charley fermé",
+    hcg: "Charley fantôme", ho: "Charley ouvert", rm: "Rim" };
+  const DRUM_NOTE = { k: 36, s: 38, hc: 42, hcg: 42, ho: 46, rm: 37 };  // carte GM
+  const EX_PROG = { skank: 26, guitar: 26, organ: 16, chords: 16, piano: 4, melody: 80, sax: 65, brass: 61 };
+  const EX_LABEL = { skank: "Skank", guitar: "Guitare", organ: "Orgue", chords: "Accords",
+    piano: "Piano", melody: "Mélodie", sax: "Sax", brass: "Cuivres" };
+  const PPQ = 480, STEP = PPQ / 4;          // 120 tics par pas (double-croche)
+  const CH_BASS = 0, CH_DRUMS = 9, CH_EX = [1, 2];
+
+  const bpmOf = (r) => r.bpm[0] === r.bpm[1] ? r.bpm[0] : Math.round((r.bpm[0] + r.bpm[1]) / 2);
+
+  /* Répète une phrase (liste de mesures) sur n mesures — le tuilage qui fait
+     tourner le riddim en boucle. Une phrase vide reste vide (batterie seule). */
+  function tilePhrase(ph, n) {
+    if (!ph || !ph.length) return Array.from({ length: n }, () => []);
+    return Array.from({ length: n }, (_, i) => ph[i % ph.length] || []);
+  }
+
+  /* Boucle du riddim : 4 mesures (64 pas) pour tous les riddims à 1-4 phrases,
+     la composition complète au-delà (ex. « Fade Away », 16 phrases). */
+  function cycleOf(r) {
+    const b = (r.bars || []).length;
+    return b > 4 ? b : 4;
+  }
+
+  const drumOf = (r, D) => (r.drm && typeof r.drm === "object") ? r.drm : (D.drums[r.st] || {});
+
+  /* Vue lecture de 64 pas : basse + 6 pistes de batterie + accompagnement,
+     chaque piste tuilée sur la longueur de boucle selon son propre cycle. */
+  function viewOf(r, D) {
+    const loop = cycleOf(r);
+    const dr = drumOf(r, D);
+    const lanes = {};
+    for (const ln of LANES) {
+      const arr = dr[ln] || [];
+      lanes[ln] = arr.length
+        ? Array.from({ length: loop }, (_, i) => arr[i % arr.length] || [])
+        : Array.from({ length: loop }, () => []);
+    }
+    const ex = (r.ex || []).map((k) => ({ r: k.r, bars: tilePhrase(k.bars, loop) }));
+    return { id: r.id, name: r.n, loop, bars: tilePhrase(r.bars, loop), lanes, ex };
+  }
+
+  /* --------------------------- export MIDI (SMF format 1) ------------- */
+  const vlq = (n) => { const b = [n & 127]; for (n >>= 7; n > 0; n >>= 7) b.unshift((n & 127) | 128); return b; };
+  const be16 = (n) => [(n >> 8) & 255, n & 255];
+  const be24 = (n) => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const be32 = (n) => [(n >>> 24) & 255, (n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const utf8 = (s) => {
+    const out = [];
+    for (const ch of s) {
+      const c = ch.codePointAt(0);
+      if (c < 0x80) out.push(c);
+      else if (c < 0x800) out.push(0xC0 | (c >> 6), 0x80 | (c & 63));
+      else if (c < 0x10000) out.push(0xE0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63));
+      else out.push(0xF0 | (c >> 18), 0x80 | ((c >> 12) & 63), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63));
+    }
+    return out;
+  };
+  const meta = (type, data) => [0xFF, type, ...vlq(data.length), ...data];
+  const name = (s) => meta(0x03, utf8(s));
+  const chunk = (id, data) => [...Array.from(id, (c) => c.charCodeAt(0)), ...be32(data.length), ...data];
+  /* ord départage les événements d'un même tic : méta/programme avant les
+     notes, note-off avant le note-on suivant. */
+  const track = (events) => {
+    const evs = events.slice().sort((a, b) => (a.tick - b.tick) || (a.ord || 0) - (b.ord || 0));
+    const data = [];
+    let last = 0;
+    for (const ev of evs) { data.push(...vlq(ev.tick - last), ...ev.bytes); last = ev.tick; }
+    data.push(...vlq(0), ...meta(0x2F, []));
+    return chunk("MTrk", data);
+  };
+  const smf = (tracks) => new Uint8Array([...chunk("MThd", [...be16(1), ...be16(tracks.length), ...be16(PPQ)]), ...tracks.flat()]);
+  const conductor = (v, bpm) => {
+    const usq = Math.round(60000000 / bpm);
+    return track([
+      { tick: 0, ord: -2, bytes: name(v.name) },
+      { tick: 0, ord: -1, bytes: meta(0x51, [...be24(usq)]) },
+      { tick: 0, ord: -1, bytes: meta(0x58, [4, 2, 24, 8]) },
+    ]);
+  };
+  const noteEvents = (bars, ch, acc, norm) => {
+    const out = [];
+    for (let b = 0; b < bars.length; b++) {
+      for (const [s, m, l] of bars[b]) {
+        const tick = (b * 16 + s) * STEP, len = Math.max(1, l) * STEP;
+        out.push({ tick, ord: 1, bytes: [0x90 | ch, m & 127, s % 8 === 0 ? acc : norm] });
+        out.push({ tick: tick + len, ord: 0, bytes: [0x80 | ch, m & 127, 0] });
+      }
+    }
+    return out;
+  };
+  const drumEventsOf = (v) => {
+    const out = [];
+    for (let b = 0; b < v.loop; b++) {
+      for (const ln of LANES) {
+        for (const s of (v.lanes[ln][b] || [])) {
+          const tick = (b * 16 + s) * STEP;
+          const vel = ln === "hcg" ? 36 : (s % 8 === 0 ? 110 : 92);
+          out.push({ tick, ord: 1, bytes: [0x90 | CH_DRUMS, DRUM_NOTE[ln], vel] });
+          out.push({ tick: tick + STEP, ord: 0, bytes: [0x80 | CH_DRUMS, DRUM_NOTE[ln], 0] });
+        }
+      }
+    }
+    return out;
+  };
+  const riddimMidi = (r, D, bpm) => {
+    const v = viewOf(r, D), b = bpm || bpmOf(r);
+    return smf([
+      conductor(v, b),
+      track([{ tick: 0, ord: -2, bytes: name("Batterie") }, ...drumEventsOf(v)]),
+      track([{ tick: 0, ord: -2, bytes: name("Basse") },
+             { tick: 0, ord: -1, bytes: [0xC0 | CH_BASS, 38] },          // GM « Synth Bass 1 »
+             ...noteEvents(v.bars, CH_BASS, 112, 96)]),
+      ...(v.ex || []).slice(0, 2).map((k, i) => track([
+        { tick: 0, ord: -2, bytes: name(EX_LABEL[k.r] || k.r) },
+        { tick: 0, ord: -1, bytes: [0xC0 | CH_EX[i], EX_PROG[k.r] ?? 16] },
+        ...noteEvents(k.bars, CH_EX[i], 100, 100)])),
+    ]);
+  };
+  const bassMidi = (r, D, bpm) => {
+    const v = viewOf(r, D), b = bpm || bpmOf(r);
+    return smf([
+      conductor(v, b),
+      track([{ tick: 0, ord: -2, bytes: name("Basse") },
+             { tick: 0, ord: -1, bytes: [0xC0 | CH_BASS, 38] },
+             ...noteEvents(v.bars, CH_BASS, 112, 96)]),
+    ]);
+  };
+
+  return { LANES, LANE_LABEL, DRUM_NOTE, EX_PROG, EX_LABEL, PPQ, STEP,
+           bpmOf, cycleOf, tilePhrase, drumOf, viewOf, riddimMidi, bassMidi };
+})();
+</script>
+<script>
+"use strict";
+(() => {
+  const D = window.RIDDB, C = window.RIDDIM_CORE;
+  const statusEl = document.getElementById("status");
+  const say = (msg, err) => { statusEl.textContent = msg || ""; statusEl.classList.toggle("err", !!err); };
+  if (!D || !C) { say("riddims-data.js introuvable à côté de riddims.html — la liste des riddims ne peut pas charger.", true); return; }
+
+  /* ------------------------------------------------------------ synthé */
+  /* Voix Web Audio adaptées de la collection (GPL-3.0) : batterie 808-ish,
+     basse saturée, skank pincé, bubble d'orgue, lead, cuivres. */
+  const synth = (() => {
+    let ac = null, out = null, noise = null, bassOsc = null;
+    function ctx() {
+      if (!ac) {
+        ac = new (window.AudioContext || window.webkitAudioContext)();
+        out = ac.createGain(); out.gain.value = 0.85; out.connect(ac.destination);
+        const n = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
+        const d = n.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        noise = n;
+      }
+      if (ac.state === "suspended") ac.resume();
+      return ac;
+    }
+    const src = (t) => { const s = ac.createBufferSource(); s.buffer = noise; s.start(t); return s; };
+    const env = (t, a, peak, dur) => {
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(peak, t + a);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      g.connect(out); return g;
+    };
+    const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
+    function kick(t) {
+      const o = ac.createOscillator(); o.type = "sine";
+      o.frequency.setValueAtTime(150, t);
+      o.frequency.exponentialRampToValueAtTime(45, t + 0.09);
+      o.connect(env(t, 0.002, 1.0, 0.30)); o.start(t); o.stop(t + 0.32);
+      const c = src(t), f = ac.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 1200;
+      c.connect(f); f.connect(env(t, 0.001, 0.25, 0.03)); c.stop(t + 0.04);
+    }
+    function snare(t) {
+      const s = src(t), f = ac.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 1900; f.Q.value = 0.8;
+      s.connect(f); f.connect(env(t, 0.002, 0.55, 0.19)); s.stop(t + 0.2);
+      const o = ac.createOscillator(); o.type = "triangle"; o.frequency.value = 185;
+      o.connect(env(t, 0.001, 0.4, 0.11)); o.start(t); o.stop(t + 0.12);
+    }
+    function hat(t, open, soft) {
+      const s = src(t), f = ac.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 7200;
+      const dur = open ? 0.28 : (soft ? 0.04 : 0.055);
+      s.connect(f); f.connect(env(t, 0.001, open ? 0.22 : (soft ? 0.07 : 0.18), dur)); s.stop(t + dur + 0.02);
+    }
+    function rim(t) {
+      const s = src(t), f = ac.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 3600; f.Q.value = 6;
+      s.connect(f); f.connect(env(t, 0.001, 0.35, 0.045)); s.stop(t + 0.06);
+      const o = ac.createOscillator(); o.type = "square"; o.frequency.value = 1050;
+      o.connect(env(t, 0.001, 0.12, 0.03)); o.start(t); o.stop(t + 0.04);
+    }
+    function pluckNote(t, m, dur, soft) {
+      const o = ac.createOscillator(); o.type = "sawtooth"; o.frequency.value = hz(m);
+      const f = ac.createBiquadFilter(); f.type = "lowpass"; f.Q.value = 2;
+      f.frequency.setValueAtTime(soft ? 2400 : 3200, t);
+      f.frequency.exponentialRampToValueAtTime(700, t + Math.min(dur, 0.18));
+      const g = env(t, 0.002, soft ? 0.18 : 0.24, Math.max(0.09, dur));
+      o.connect(f); f.connect(g); o.start(t); o.stop(t + Math.max(0.09, dur) + 0.03);
+    }
+    function organNote(t, m, dur) {
+      const f0 = hz(m), dur2 = Math.max(0.12, dur);
+      const g = env(t, 0.012, 0.15, dur2);
+      [1, 2, 3].forEach((h, i) => {
+        const o = ac.createOscillator(); o.type = i === 2 ? "square" : "sine";
+        o.frequency.value = f0 * h;
+        const hg = ac.createGain(); hg.gain.value = [1, 0.4, 0.16][i];
+        o.connect(hg); hg.connect(g); o.start(t); o.stop(t + dur2 + 0.03);
+      });
+    }
+    function leadNote(t, m, dur) {
+      const o = ac.createOscillator(); o.type = "triangle"; o.frequency.value = hz(m);
+      const f = ac.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 2200;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.2, t + 0.02);
+      g.gain.setValueAtTime(0.2, t + Math.max(0.03, dur - 0.04));
+      g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(f); f.connect(g); g.connect(out);
+      o.start(t); o.stop(t + dur + 0.03);
+    }
+    function brassNote(t, m, dur) {
+      const f = ac.createBiquadFilter(); f.type = "lowpass"; f.Q.value = 1;
+      f.frequency.setValueAtTime(900, t);
+      f.frequency.linearRampToValueAtTime(1700, t + Math.min(dur, 0.25));
+      const g = env(t, 0.03, 0.18, Math.max(0.15, dur));
+      [-7, 7].forEach((cents) => {
+        const o = ac.createOscillator(); o.type = "sawtooth";
+        o.frequency.value = hz(m) * Math.pow(2, cents / 1200);
+        o.connect(f); o.start(t); o.stop(t + Math.max(0.15, dur) + 0.03);
+      });
+      f.connect(g);
+    }
+    function bassNote(t, m, dur) {
+      if (bassOsc) { try { bassOsc.stop(t); } catch { /* déjà arrêté */ } bassOsc = null; }
+      const o = ac.createOscillator(); o.type = "sawtooth"; o.frequency.value = hz(m);
+      const f = ac.createBiquadFilter(); f.type = "lowpass"; f.Q.value = 7;
+      f.frequency.setValueAtTime(240, t);
+      f.frequency.exponentialRampToValueAtTime(900, t + 0.03);
+      f.frequency.exponentialRampToValueAtTime(260, t + Math.min(dur, 0.4));
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.5, t + 0.006);
+      g.gain.setValueAtTime(0.5, t + Math.max(0.01, dur - 0.05));
+      g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(f); f.connect(g); g.connect(out);
+      o.start(t); o.stop(t + dur + 0.02);
+      bassOsc = o;
+    }
+    const EX_VOICE = {
+      skank: (t, m, d) => pluckNote(t, m, d), guitar: (t, m, d) => pluckNote(t, m, d, true),
+      organ: (t, m, d) => organNote(t, m, d), chords: (t, m, d) => organNote(t, m, d),
+      piano: (t, m, d) => organNote(t, m, d), melody: (t, m, d) => leadNote(t, m, d),
+      sax: (t, m, d) => brassNote(t, m, d), brass: (t, m, d) => brassNote(t, m, d),
+    };
+    function silence() {
+      if (bassOsc) { try { bassOsc.stop(); } catch { /* rien */ } bassOsc = null; }
+    }
+    return { ctx, kick, snare, hat, rim, bassNote, EX_VOICE, silence, get ac() { return ac; } };
+  })();
+
+  /* --------------------------------------------------------- MIDI FM-1 */
+  /* Sortie Web MIDI : la basse et l'accompagnement (et la batterie GM en
+     option) sont rejoués par la pédale FM-1 en boucle. */
+  const midi = (() => {
+    let access = null, out = null;
+    const sel = document.getElementById("midi-out");
+    const nameEl = document.getElementById("midi-name");
+    const dot = document.getElementById("midi-dot");
+    let dotTimer = null;
+    const flash = () => { dot.classList.add("on"); clearTimeout(dotTimer); dotTimer = setTimeout(() => dot.classList.remove("on"), 90); };
+    async function scan() {
+      if (!navigator.requestMIDIAccess) { nameEl.textContent = "Web MIDI indisponible (Chrome ou Edge requis)."; return; }
+      try { access = await navigator.requestMIDIAccess({ sysex: false }); }
+      catch { nameEl.textContent = "Accès MIDI refusé."; return; }
+      fill();
+      access.onstatechange = () => { fill(); };
+    }
+    function fill() {
+      const prev = sel.value;
+      const outs = access ? [...access.outputs.values()] : [];
+      sel.replaceChildren(...(outs.length ? outs.map((o) => new Option(o.name, o.id)) : [new Option("— aucune —", "")]));
+      if (outs.length) {
+        const keep = outs.find((o) => o.id === prev);
+        const fm1 = outs.find((o) => /fm-1|riddim|usb/i.test(o.name));
+        sel.value = (keep || fm1 || outs[0]).id;
+        out = sel.value ? access.outputs.get(sel.value) : null;
+        nameEl.textContent = out ? "sortie : " + out.name : "";
+      } else { out = null; nameEl.textContent = ""; }
+    }
+    sel.addEventListener("change", () => { out = sel.value && access ? access.outputs.get(sel.value) : null; nameEl.textContent = out ? "sortie : " + out.name : ""; });
+    document.getElementById("midi-refresh").addEventListener("click", scan);
+    const ch = () => Number(document.getElementById("midi-ch").value) & 15;
+    const wantNotes = () => document.getElementById("midi-send").checked;
+    const wantDrums = () => document.getElementById("midi-drums").checked;
+    const tm = (t) => performance.now() + Math.max(0, (t - synth.ac.currentTime)) * 1000;
+    function send(bytes, when) { if (out) { try { out.send(bytes, when); flash(); } catch { /* sortie disparue */ } } }
+    function noteOn(st, m, vel) { send([0x90 | ch(), m & 127, vel], tm(st)); }
+    function noteOff(st, m) { send([0x80 | ch(), m & 127, 0], tm(st)); }
+    function panic() {
+      if (!out) return;
+      try { out.send([0xB0 | ch(), 123, 0]); out.send([0xB0 | ch(), 120, 0]); } catch { /* rien */ }
+    }
+    return { scan, noteOn, noteOff, panic, wantNotes, wantDrums, get ready() { return !!access; } };
+  })();
+
+  /* ------------------------------------------------------------ moteur */
+  /* Horloge unique (look-ahead 150 ms, réveil 25 ms) qui schedle l'audio,
+     la sortie MIDI et l'affichage : une seule boucle de 64 pas. */
+  const engine = (() => {
+    let run = null;
+    const stepDur = (bpm) => 60 / bpm / 4;
+    function scheduleStep(st, t, sd) {
+      const v = run.v, tr = run.tr;
+      const bar = Math.floor(st / 16), s = st % 16;
+      const te = Math.max(t, synth.ac.currentTime);
+      for (const ln of C.LANES) {
+        if ((v.lanes[ln][bar] || []).includes(s)) {
+          if (ln === "k") synth.kick(te);
+          else if (ln === "s") synth.snare(te);
+          else if (ln === "hc") synth.hat(te, false);
+          else if (ln === "hcg") synth.hat(te, false, true);
+          else if (ln === "ho") synth.hat(te, true);
+          else synth.rim(te);
+        }
+      }
+      const bass = v.bars[bar] || [];
+      for (const [bs, m, l] of bass) {
+        if (bs !== s) continue;
+        const dur = Math.max(1, l) * sd * 0.92;
+        synth.bassNote(te, m + tr, dur);
+        if (midi.wantNotes()) {
+          midi.noteOn(t, m + tr, bs % 8 === 0 ? 112 : 96);
+          midi.noteOff(t + dur, m + tr);
+        }
+      }
+      v.ex.forEach((k) => {
+        for (const [bs, m, l] of (k.bars[bar] || [])) {
+          if (bs !== s) continue;
+          const dur = Math.max(1, l) * sd * 0.92;
+          synth.EX_VOICE[k.r]?.(te, m + tr, dur);
+          if (midi.wantNotes()) {
+            midi.noteOn(t, m + tr, 100);
+            midi.noteOff(t + dur, m + tr);
+          }
+        }
+      });
+      if (midi.wantDrums()) {
+        for (const ln of C.LANES) {
+          if ((v.lanes[ln][bar] || []).includes(s)) {
+            const nm = C.DRUM_NOTE[ln];
+            const vel = ln === "hcg" ? 36 : (s % 8 === 0 ? 110 : 92);
+            midi.noteOn(t, nm, vel);
+            midi.noteOff(t + sd, nm);
+          }
+        }
+      }
+    }
+    function tick() {
+      if (!run) return;
+      const sd = stepDur(run.bpm);
+      while (run.next < synth.ac.currentTime + 0.15) {
+        scheduleStep(run.step, run.next, sd);
+        run.next += sd;
+        run.step = (run.step + 1) % run.loopSteps;
+      }
+    }
+    function start(r, v, bpm, tr) {
+      synth.ctx();
+      stop();
+      run = { v, r, bpm, tr, step: 0, loopSteps: v.loop * 16, next: synth.ac.currentTime + 0.08 };
+      run.ac0 = run.next;
+      run.timer = setInterval(tick, 25);
+      tick();
+    }
+    function stop() {
+      if (run) { clearInterval(run.timer); run = null; }
+      synth.silence();
+      midi.panic();
+    }
+    function setBpm(bpm) { if (run) run.bpm = bpm; }
+    function setTr(tr) { if (run) run.tr = tr; }
+    const currentStep = () => {
+      if (!run) return -1;
+      const sd = stepDur(run.bpm);
+      return Math.max(0, Math.floor((synth.ac.currentTime - run.ac0) / sd)) % run.loopSteps;
+    };
+    return { start, stop, setBpm, setTr, currentStep, get playing() { return !!run; }, get info() { return run ? { r: run.r, v: run.v } : null; } };
+  })();
+
+  /* ------------------------------------------------- séquenceur visuel */
+  const seqEl = document.getElementById("seq");
+  const gridName = document.getElementById("grid-name");
+  const gridMeta = document.getElementById("grid-meta");
+  const gridStatus = document.getElementById("grid-status");
+  let cells = null, lastPh = -1;
+  function buildGrid(v, r) {
+    const rows = [];
+    rows.push({ lbl: "Basse", cls: "bass", events: v.bars, long: true, numeric: false });
+    for (const ln of C.LANES) {
+      if (v.lanes[ln].some((b) => b.length)) rows.push({ lbl: C.LANE_LABEL[ln], cls: "", events: v.lanes[ln], long: false, numeric: true });
+    }
+    v.ex.forEach((k) => rows.push({ lbl: C.EX_LABEL[k.r] || k.r, cls: "", events: k.bars, long: true, numeric: false }));
+    seqEl.replaceChildren();
+    const show = Math.min(4, v.loop);
+    cells = rows.map(() => []);
+    rows.forEach((row, ri) => {
+      const div = document.createElement("div");
+      div.className = "seqrow " + row.cls;
+      const lbl = document.createElement("span"); lbl.className = "lbl"; lbl.textContent = row.lbl;
+      const bars = document.createElement("div"); bars.className = "bars";
+      for (let b = 0; b < show; b++) {
+        const barEl = document.createElement("div"); barEl.className = "stepbar";
+        for (let s = 0; s < 16; s++) {
+          const c = document.createElement("span"); c.className = "cell";
+          const evs = row.events[b] || [];
+          const hit = row.numeric ? evs.includes(s) : evs.some((e) => e[0] === s);
+          if (hit) {
+            c.classList.add("on");
+            if (s % 8 !== 0 && !row.long) c.classList.add("soft");
+            if (row.long && evs.some((e) => e[0] === s && e[2] >= 2)) c.classList.add("long");
+          }
+          barEl.appendChild(c);
+          cells[ri].push(c);
+        }
+        bars.appendChild(barEl);
+      }
+      div.appendChild(lbl); div.appendChild(bars);
+      seqEl.appendChild(div);
+    });
+    lastPh = -1;
+    gridName.textContent = v.name;
+    const steps = v.loop * 16;
+    gridMeta.textContent = `${D.styles[r.st] || r.st} · ${bpmTxt(r)} · ` +
+      (steps === 64 ? "boucle 64 pas" : `boucle ${steps} pas (${v.loop} mesures — les 64 premiers pas affichés)`);
+  }
+  function setPlayhead(step) {
+    if (!cells) return;
+    const show = Math.min(4, engine.info ? engine.info.v.loop : 4) * 16;
+    const ph = step >= 0 && step < show ? step : -1;
+    if (ph === lastPh) return;
+    if (lastPh >= 0) for (const row of cells) row[lastPh] && row[lastPh].classList.remove("ph");
+    if (ph >= 0) for (const row of cells) row[ph] && row[ph].classList.add("ph");
+    lastPh = ph;
+    if (engine.info) {
+      const cur = Math.floor(step / 16) + 1, tot = engine.info.v.loop;
+      gridStatus.textContent = cur <= tot ? `mesure ${cur}/${tot}` : "";
+    }
+  }
+  (function raf() {
+    if (engine.playing) setPlayhead(engine.currentStep());
+    requestAnimationFrame(raf);
+  })();
+
+  /* ------------------------------------------------------------ cartes */
+  const cardsEl = document.getElementById("cards");
+  const filtersEl = document.getElementById("filters");
+  const qEl = document.getElementById("q");
+  const countEl = document.getElementById("count");
+  const listStatus = document.getElementById("list-status");
+  const bpmEl = document.getElementById("bpm");
+  const trEl = document.getElementById("tr");
+  const fmtBpm = (r) => r.bpm[0] === r.bpm[1] ? `${r.bpm[0]}` : `${r.bpm[0]}–${r.bpm[1]}`;
+  const bpmTxt = (r) => `${fmtBpm(r)} BPM`;
+  let filter = "tous", playingId = null, selected = null;
+
+  const cardEls = new Map();
+  function card(r) {
+    const el = document.createElement("div");
+    el.className = "card"; el.dataset.id = r.id;
+    const loop = C.cycleOf(r);
+    const stepsTxt = loop === 4 ? "64 pas" : `${loop * 16} pas`;
+    const chips = [`<span class="chip">${D.styles[r.st] || r.st}</span>`];
+    if (r.lb) chips.push(`<span class="chip dim">${r.lb}${r.y ? " · " + r.y : ""}</span>`);
+    chips.push(`<span class="chip dim">${bpmTxt(r)}</span><span class="chip steps">${stepsTxt}</span>`);
+    el.innerHTML = `
+      <div><span class="name"></span>${r.a ? `<span class="aka"></span>` : ""}</div>
+      <div class="chips">${chips.join("")}</div>
+      ${r.ch ? `<div class="chords"></div>` : ""}
+      <div class="acts">
+        <button class="btn primary play-btn" type="button">▶ Écouter</button>
+        <button class="btn dl-full" type="button" title="Fichier MIDI complet (batterie + basse + accompagnement), boucle ${loop === 4 ? "64 pas" : loop + " mesures"}">⭳ Riddim MIDI</button>
+        <button class="btn dl-bass" type="button" title="Fichier MIDI de la ligne de basse">⭳ Basse MIDI</button>
+      </div>`;
+    el.querySelector(".name").textContent = r.n;
+    if (r.a) el.querySelector(".aka").textContent = r.a;
+    if (r.ch) el.querySelector(".chords").textContent = "Accords : " + r.ch;
+    el.querySelector(".play-btn").addEventListener("click", () => togglePlay(r));
+    el.querySelector(".dl-full").addEventListener("click", () => downloadMidi(r, "riddim"));
+    el.querySelector(".dl-bass").addEventListener("click", () => downloadMidi(r, "basse"));
+    cardEls.set(r.id, el);
+    return el;
+  }
+  function markPlay(id) {
+    playingId = id;
+    for (const [k, el] of cardEls) {
+      el.classList.toggle("play", k === id);
+      const b = el.querySelector(".play-btn");
+      if (b) b.textContent = k === id ? "■ Stop" : "▶ Écouter";
+    }
+    document.getElementById("btn-play").textContent = id ? "■ Stop" : "▶ Écouter";
+    const btn = document.getElementById("btn-play");
+    btn.classList.toggle("primary", !id);
+    document.getElementById("btn-stop").disabled = !id;
+  }
+  function togglePlay(r) {
+    if (engine.playing && playingId === r.id) { stopAll(); say("Écoute arrêtée."); return; }
+    const v = C.viewOf(r, D);
+    bpmEl.value = C.bpmOf(r);
+    trEl.value = "0";
+    buildGrid(v, r);
+    engine.start(r, v, C.bpmOf(r), 0);
+    selected = r.id;
+    markPlay(r.id);
+    const steps = v.loop === 4 ? "64 pas" : `${v.loop * 16} pas`;
+    say(`« ${r.n} » en boucle (${steps})${midi.wantNotes() && midi.ready ? " — basse et accompagnement envoyés à la pédale en MIDI." : " — écoute locale."}`);
+  }
+  function stopAll() {
+    engine.stop();
+    markPlay(null);
+    setPlayhead(-1);
+    gridStatus.textContent = "";
+  }
+  document.getElementById("btn-play").addEventListener("click", () => {
+    if (engine.playing) { stopAll(); say("Écoute arrêtée."); return; }
+    if (selected) { const r = D.list.find((x) => x.id === selected); if (r) { togglePlay(r); return; } }
+    const first = D.list.find((x) => filter === "tous" || x.st === filter);
+    if (first) togglePlay(first);
+  });
+  document.getElementById("btn-stop").addEventListener("click", () => { stopAll(); say("Écoute arrêtée."); });
+  bpmEl.addEventListener("input", () => {
+    const b = Number(bpmEl.value);
+    if (b >= 40 && b <= 220) { engine.setBpm(b); if (selected) say(`Tempo : ${b} BPM.`); }
+  });
+  trEl.addEventListener("change", () => { engine.setTr(Number(trEl.value) || 0); });
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space" && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault();
+      if (engine.playing) { stopAll(); } else if (selected) { const r = D.list.find((x) => x.id === selected); if (r) togglePlay(r); }
+    }
+  });
+
+  function downloadMidi(r, kind) {
+    const bytes = kind === "basse" ? C.bassMidi(r, D, Number(bpmEl.value) || undefined) : C.riddimMidi(r, D, Number(bpmEl.value) || undefined);
+    const fname = `${r.id}-${kind === "basse" ? "basse" : "riddim"}-${C.bpmOf(r)}bpm.mid`;
+    const url = URL.createObjectURL(new Blob([bytes], { type: "audio/midi" }));
+    const a = Object.assign(document.createElement("a"), { href: url, download: fname });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    say(`« ${r.n} » téléchargé : ${fname} (${kind === "basse" ? "ligne de basse" : "riddim complet"}, boucle ${C.cycleOf(r) === 4 ? "64 pas" : C.cycleOf(r) * 16 + " pas"}).`);
+  }
+
+  function render() {
+    const q = qEl.value.trim().toLowerCase();
+    const items = D.list
+      .filter((r) => filter === "tous" || r.st === filter)
+      .filter((r) => !q || (r.n + " " + r.a + " " + r.lb + " " + r.ch).toLowerCase().includes(q));
+    cardsEl.replaceChildren(...items.map(card));
+    countEl.textContent = `${items.length} / ${D.list.length} riddims`;
+  }
+  const mkChip = (key, label) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn" + (key === filter ? " on" : "");
+    b.textContent = label;
+    b.addEventListener("click", () => { filter = key; filtersEl.querySelectorAll(".btn").forEach((x) => x.classList.remove("on")); b.classList.add("on"); render(); });
+    return b;
+  };
+  filtersEl.replaceChildren(mkChip("tous", "Tous"), ...Object.keys(D.styles).map((k) => mkChip(k, D.styles[k])));
+  qEl.addEventListener("input", render);
+
+  countEl.textContent = `${D.list.length} riddims`;
+  document.getElementById("count").textContent = `${D.list.length} riddims`;
+  listStatus.textContent = D.head ? D.head.charAt(0).toUpperCase() + D.head.slice(1) : "";
+  render();
+  midi.scan();
+  say(`${D.list.length} riddims en boucles de 64 pas — « Écouter » joue batterie, basse et accompagnement ; branchez votre FM-1 pour la jouer dessus en MIDI.`);
+})();
+</script>
+</body>
+</html>

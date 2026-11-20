@@ -8,6 +8,8 @@
 
 **[⬇ Installer RIDDIM BOX sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update)** — page d'installation **en français**, ouverte directement sur le bon onglet. Compatible avec toutes les pédales d'origine : **V14, V15 et V16**. Utilisez Chrome ou Edge, pédale allumée connectée en USB ; procédure complète plus bas. *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
 
+**[▶ Riddims — les 75 boucles de 64 pas](https://altessproduction.github.io/RIDDIM-BOX-FM1/riddims.html)** — la collection complète de riddims (Riddim Real Book + pack « RIDDIM MIDI » + Sleng Teng) en boucles de 64 pas qui tournent en continu : séquenceur visuel, écoute Web Audio, export MIDI et **jeu sur la pédale FM-1 en MIDI** (basse et accompagnement envoyés en direct à la pédale).
+
 ![RIDDIM BOX dans l'émulateur FM-1](docs/img/browser-emu-play.png)
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
@@ -64,6 +66,8 @@ RIDDIM BOX est le firmware le plus lourd du catalogue FM-1 (deux cœurs PI32v2 q
 | `firmware/RIDDIM_BOX_update.html` | Page d'installation hors-ligne (voir plus bas) |
 | `firmware/SHA256SUMS.txt` | Empreintes de contrôle du firmware et de la page d'installation |
 | `demo/emulator/` | Émulateur FM-1 dans le navigateur + le firmware (GitHub Pages ready) |
+| `riddims.html` | Page **Riddims** : les 75 riddims en boucles de 64 pas (séquenceur, écoute, MIDI vers la pédale, export MIDI) |
+| `riddims-data.js` | Base de données des riddims (copie conforme du fichier généré de la [collection RIDDIM](https://altessproduction.github.io/Riddim-collection/riddims.html)) |
 | `docs/audit_riddim_box_fm1.pdf` | Audit technique complet : flash, RAM, CPU-audio, installation, plan d'optimisation |
 | `docs/figs/` | Figures de l'audit (budgets flash/RAM, carte de la flash 1 Mo) |
 | `docs/img/` | Captures d'écran LCD du firmware réel (10 pages de l'UI, 8 poses du lion) |
