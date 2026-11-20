@@ -12,7 +12,7 @@
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
 SHA-256 : `aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894`
-Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `d9f9395a1f26de31d4168fc576a3f7f8f0cf7135e6c5ed046cd136f24d8b31b2` (interface française, notice V14/V15/V16 intégrée, journal de diagnostic avec bouton « Copier le diagnostic »)
+Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `a8b81aeb0a487f30141646f285135a61d94318b35d168bf51ab66d23fdbc64ee` (interface française, notice V14/V15/V16 intégrée, journal de diagnostic avec bouton « Copier le diagnostic »)
 
 ---
 

@@ -5213,7 +5213,7 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
   }
   class Updater {
     constructor(access,pkg,status=()=>{},timing={}) {
-      this.access=access; this.pkg=pkg; this.link=null; this.identity=null; this.busy=false; this.trace=[]; this.waitSeen=[]; this.status=(text,progress)=>{ this.trace.push([Date.now(),String(text),progress===undefined?null:progress]); try{status(text,progress);}catch(_){} };
+      this.access=access; this.pkg=pkg; this.link=null; this.identity=null; this.busy=false; this.trace=[]; this.waitSeen=[]; this.status=(text,progress)=>{ this.trace.push([Date.now(),String(text),progress===undefined?null:progress]); if(this.trace.length>600)this.trace.splice(0,this.trace.length-600); try{status(text,progress);}catch(_){} };
       this.timing={idle:10000,writeIdle:300000,reconnect:75000,settle:600,pace:0,...timing};
     }
     async open(pair,signal) {
@@ -5315,24 +5315,33 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
     async serve(finish,idle,phase) {
       const image=this.pkg.image, covered=new Uint8Array(Math.ceil(image.length/8));
       const started=Date.now(); let last=started,total=0;
+      this.plog=[]; this.pstats={served:0,newpkts:0,rereads:0,cmdOther:{},odd:[]}; this.lastGrowth=Date.now();
       for(;;) {
-        check(Date.now()-started<Math.max(idle*3,120000),'升级超过最长等待时间，尚未完成');
+        check(Date.now()-started<Math.max(idle*6,1800000),'升级超过最长等待时间，尚未完成');
         check(Date.now()-last<idle,'设备停止请求数据，升级未完成');
         const packet=await this.link.read(250);
         if(!packet) { check(!this.link.lost,'USB 意外断开；重新连接同一设备后用此网页重试'); check(Date.now()-last<idle,'设备停止请求数据，升级未完成'); continue; }
-        if(packet.command!==48 || packet.data.length!==8) continue;
+        if(packet.command!==48){const co=this.pstats.cmdOther;co[packet.command]=(co[packet.command]||0)+1;if(this.pstats.odd.length<20)this.pstats.odd.push({c:packet.command,l:packet.data?packet.data.length:0,h:packet.data?[...packet.data.subarray(0,12)]:[]});continue;}
+        if(packet.data.length!==8&&this.pstats.odd.length<20)this.pstats.odd.push({c:48,l:packet.data.length,h:[...packet.data.subarray(0,12)]});
+        if(packet.data.length<8) continue;
         const p=packet.data, address=le(p,1,4), bytes=le(p,5,3);
         check(bytes>0 && bytes<=512,'设备请求长度无效');
+        this.pstats.served++;
+        const isFin=(address===0xe0000000||address===0xf0000000);
+        const isNew=!isFin && address<image.length && !(covered[address>>>3]&(1<<(address&7)));
+        this.plog.push([Date.now()-started,address,bytes,total,isFin?2:(isNew?1:0)]);
+        if(this.plog.length>240)this.plog.shift();
+        if(isNew){this.pstats.newpkts++;this.lastGrowth=Date.now();} else if(!isFin){this.pstats.rereads++;}
         if(address===0xe0000000 || address===0xf0000000) {
-          check(address===finish && bytes===8,'设备的升级阶段不匹配');
-          this.link.send(frame(48,[p[0],...p.subarray(1,8),115,117,99,99,101,115,115,0]));
+          check(address===finish,'设备的升级阶段不匹配');
+          this.link.send(frame(48,[p[0],p[1]??0,p[2]??0,p[3]??0,p[4]??0,p[5]??0,p[6]??0,p[7]??0,115,117,99,99,101,115,115,0]));
           // Web MIDI send queues bytes; leave the port open for the completion
           // response and bounded duplicate finish requests before disconnecting.
           const end=Date.now()+this.timing.settle;
           while(Date.now()<end && !this.link.lost) {
             const again=await this.link.read(Math.min(100,end-Date.now()));
-            if(again && again.command===48 && again.data.length===8 && le(again.data,1,4)===finish && le(again.data,5,3)===8)
-              this.link.send(frame(48,[again.data[0],...again.data.subarray(1,8),115,117,99,99,101,115,115,0]));
+            if(again && again.command===48 && again.data.length>=8 && le(again.data,1,4)===finish)
+              this.link.send(frame(48,[again.data[0],again.data[1]??0,again.data[2]??0,again.data[3]??0,again.data[4]??0,again.data[5]??0,again.data[6]??0,again.data[7]??0,115,117,99,99,101,115,115,0]));
           }
           return;
         }
@@ -6118,7 +6127,7 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
     busy=true;writing=true;enable();FM1I18n.text($('error'),'');
     let completed=false;
     try{await updater.install({force});completed=true;}
-    catch(error){FM1I18n.text($('error'),error.message);status('升级未完成；请保留本网页，检查设备连接后重试');}
+    catch(error){try{globalThis.FM1_LASTERROR=(error&&error.message)||String(error);}catch(_){}FM1I18n.text($('error'),error.message);status('升级未完成；请保留本网页，检查设备连接后重试');}
     finally{busy=false;writing=false;connected=false;finishingUpdate=completed;$('device-identity').textContent=completed?pkg.product:'';enable();}
     if(completed&&pkg.kind==='stock'){
       updateResult='stock';finishingUpdate=false;status('原厂 V15 和 128 个出厂音色已恢复。请切换音色试听。',100);enable();
@@ -7238,7 +7247,7 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
       const u=globalThis.FM1_UPDATER;
       if(u){ out.mode=u.mode||null; out.identity=u.identity||null; out.force=!!u.force;
         out.waitSeen=[...new Set(u.waitSeen||[])]; out.trace=(u.trace||[]).slice(-400);
-        out.lastServe=u.lastServe||null; out.diagnostics=u.diagnostics||null; }
+        out.lastServe=u.lastServe||null; out.diagnostics=u.diagnostics||null; out.pstats=u.pstats||null; out.plog=(u.plog||[]).slice(-240); out.lastGrowthAgoMs=u.lastGrowth?(Date.now()-u.lastGrowth):null; out.lastError=globalThis.FM1_LASTERROR||null; }
       else out.updater='not-created-yet';
       const p=globalThis.FM1_PKG||globalThis.FM1_PACKAGE;
       if(p) out.pkg={product:p.product,release_version:p.release_version,build_id:p.build_id,bytes:p.bytes,loader_sha256:p.loader_sha256};
