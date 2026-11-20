@@ -6,13 +6,13 @@
 
 **[▶ Ouvrir l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/demo/emulator/)** — RIDDIM BOX se lance directement dans le navigateur, firmware chargé automatiquement.
 
-**[▶ Installer RIDDIM BOX sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html)** — page d'installation en un clic (Chrome ou Edge, pédale connectée en USB ; procédure complète plus bas). *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
+**[⬇ Installer RIDDIM BOX sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update)** — page d'installation **en français**, ouverte directement sur le bon onglet. Compatible avec toutes les pédales d'origine : **V14, V15 et V16**. Utilisez Chrome ou Edge, pédale allumée connectée en USB ; procédure complète plus bas. *(La page d'accueil du dépôt [redirige aussi vers l'émulateur](https://altessproduction.github.io/RIDDIM-BOX-FM1/).)* En local : `python -m http.server 8765` à la racine du dépôt, puis ouvrir <http://localhost:8765/>.
 
 ![RIDDIM BOX dans l'émulateur FM-1](docs/img/browser-emu-play.png)
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
 SHA-256 : `aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894`
-Page d'installation : [**▶ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html) — SHA-256 `e3423e12db9551a03fd7eedf4ac8b1da9013cc9d3c48a422705d853829641d81`
+Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `0932344e802303512d6534e81b7118ccad91107cc0bb73a54f3ae0bb7b988946` (interface française, notice V14/V15/V16 intégrée)
 
 ---
 
@@ -45,7 +45,7 @@ RIDDIM BOX est le firmware le plus lourd du catalogue FM-1 (deux cœurs PI32v2 q
 | **fm1-live** desktop natif 0.5.0 | interface partout, audio temps réel sur machine rapide | interface ok, audio haché | **pas encore de JIT x86-64** (interpréteur ¼–½ de la vitesse JIT ; JIT annoncé pour la 0.6) |
 | **FM-1.vst3 / FM-1.clap** (plugin DAW) | temps réel en DAW sur machine rapide | non | même moteur que fm1-live |
 | **fm1-emu** (batch, hors ligne) | génère WAV + captures BMP hors ligne | possible mais lent (~0,01× sur serveur rapide) | pour produire un fichier audio sans jouer en direct |
-| **La vraie pédale FM-1** | 240 MHz natifs, aucune limite | — | la voie garantie : [▶ Installer sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html) |
+| **La vraie pédale FM-1** | 240 MHz natifs, aucune limite | — | la voie garantie : [⬇ Installer sur votre FM-1](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) |
 
 **Concrètement :**
 - **PC modeste** : l'interface se teste intégralement (écran, 10 pages, lion, touches, MIDI) ; pour **entendre** la musique en temps réel, utilisez une machine récente, un **smartphone récent** (Chrome Android fait tourner l'émulateur web) ou flashez la vraie pédale.
@@ -157,12 +157,13 @@ Interface vert-jaune-rouge, tout est accessible sans menu profond : pages naviga
 
 ## Installation sur un vrai FM-1
 
-Le workbench en ligne de M-VAVE (<https://open.m-vave.com/fm1-workbench>) **n'accepte pas les `.fwsc` tiers**. L'installation passe par la page hors-ligne incluse :
+Le workbench en ligne de M-VAVE (<https://open.m-vave.com/fm1-workbench>) **n'accepte pas les `.fwsc` tiers**. L'installation passe par la page hors-ligne incluse — **compatible avec les pédales d'origine V14, V15 et V16** (la version « V14 » affichée sur la page est celle de la base du firmware RIDDIM BOX, pas un prérequis) :
 
-1. Ouvrir la **[page d'installation en ligne](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html)** dans **Chrome ou Edge** — un clic depuis ce README, rien à télécharger (page autonome, firmware embarqué). Hors connexion : télécharger `firmware/RIDDIM_BOX_update.html` et l'ouvrir en double-clic ;
-2. Connecter le FM-1 en USB, suivre le protocole officiel : **« Force flash »** depuis le firmware d'usine V15 ;
-3. Le transfert utilise le protocole USB-MIDI officiel avec **vérification CRC** et contrôle de version après redémarrage ; un échec laisse la machine bootable ;
-4. **Retour arrière possible** : la page embarque aussi la V15 d'origine pour revenir au firmware M-VAVE.
+1. Ouvrir la **[page d'installation en ligne](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update)** dans **Chrome ou Edge** sur PC (pas Firefox ni Safari) — un clic depuis ce README, rien à télécharger (page autonome, firmware embarqué, interface en français). Si le navigateur demande l'autorisation **MIDI / SysEx**, l'accepter. Hors connexion : télécharger `firmware/RIDDIM_BOX_update.html` et l'ouvrir en double-clic ;
+2. Pédale **allumée** branchée en USB : cliquer **« Connecter la pédale »** et choisir le FM1 dans la fenêtre du navigateur ;
+3. Cocher la case de sauvegarde, puis **« Commencer la mise à jour »** et confirmer. Si la pédale est en V16 (ou toute autre version non reconnue), la page demande **« Activer le flash forcé et reconnecter »** : cliquer, recocher la sauvegarde, puis **« Flash forcé »** et confirmer — c'est la procédure normale de migration ;
+4. Le transfert utilise le protocole USB-MIDI officiel avec **vérification CRC** et contrôle de version après redémarrage ; un échec laisse la machine bootable ;
+5. **Retour arrière possible** : la page embarque aussi la V15 d'origine (« Réinstaller le V15 d'origine ») pour revenir au firmware M-VAVE.
 
 Vérifier l'empreinte avant installation :
 

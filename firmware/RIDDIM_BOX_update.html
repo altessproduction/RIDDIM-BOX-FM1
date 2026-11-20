@@ -1,13 +1,13 @@
 <!doctype html>
 <!-- SPDX-License-Identifier: GPL-3.0-only WITH GPL-3.0-linking-exception -->
-<html lang="zh-CN">
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>FM1 工作台</title>
+<title>Atelier FM1 — RIDDIM BOX</title>
 <style>
 :root{color-scheme:dark;font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;background:#121518;color:#e2e7e9;--accent:#aae4c8;--muted:#859293}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 25%,#252c2c80,transparent 65%);min-height:100vh}main{max-width:1160px;margin:auto;padding:34px 36px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:11px;letter-spacing:.16em;color:var(--muted)}header b{color:#d5dedc;letter-spacing:.2em}.version-tag{font:10px/1.4 Consolas,"Liberation Mono",monospace;letter-spacing:.08em}h1{font-size:32px;letter-spacing:-.04em;margin:20px 0 2px;font-weight:600}h2{font-size:22px;margin:0 0 10px}h3{font-size:18px}p{color:#99a7a8}main>p{margin:4px 0 22px;font-size:13px}a{color:var(--accent)}button,input,select{font:inherit}button{border:1px solid #465150;border-radius:7px;padding:9px 15px;cursor:pointer;background:#293230;color:#dde5e1;margin:5px 6px 5px 0;transition:background .12s,border-color .12s}button:hover{background:#384541;border-color:#758a80}button.primary{background:var(--accent);color:#172e24;border-color:var(--accent);font-weight:650}button.primary:hover{background:#c4f3da}button:disabled{opacity:.4;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}[hidden]{display:none!important}nav{display:flex;gap:3px;border-bottom:1px solid #333c3b;margin-bottom:22px}nav button{background:transparent;border:0;border-radius:0;margin:0 22px 0 0;padding:10px 1px 13px;font-size:13px;color:#889a98;border-bottom:2px solid transparent}nav button[aria-selected=true]{color:#d1eee0;border-bottom-color:var(--accent)}section{padding:22px;border:1px solid #343e3d;border-radius:12px;background:#1b2221;margin:20px 0}#tab-sim{border:0;background:none;padding:0;margin:0}#tab-library,#tab-update{max-width:720px;margin:28px auto}.sim-toolbar{display:flex;gap:10px;align-items:center;margin:0 0 18px;flex-wrap:wrap}.sim-toolbar button{margin:0;font-size:12px;padding:8px 14px}.sim-health{display:flex;align-items:center;gap:9px;font-size:11px;color:#96a8a0}.sim-health:before{content:"";width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px #aae4c844}.sim-health span+span{border-left:1px solid #46534d;padding-left:9px;color:#6f8379}.sim-toolbar label{margin:0 0 0 auto;display:flex;gap:8px;align-items:center;font-size:11px;color:#879b93}.sim-toolbar input{width:85px;accent-color:var(--accent)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 25%,#252c2c80,transparent 65%);min-height:100vh}main{max-width:1160px;margin:auto;padding:34px 36px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:11px;letter-spacing:.16em;color:var(--muted)}header b{color:#d5dedc;letter-spacing:.2em}.version-tag{font:10px/1.4 Consolas,"Liberation Mono",monospace;letter-spacing:.08em}h1{font-size:32px;letter-spacing:-.04em;margin:20px 0 2px;font-weight:600}h2{font-size:22px;margin:0 0 10px}h3{font-size:18px}p{color:#99a7a8}main>p{margin:4px 0 22px;font-size:13px}a{color:var(--accent)}button,input,select{font:inherit}button{border:1px solid #465150;border-radius:7px;padding:9px 15px;cursor:pointer;background:#293230;color:#dde5e1;margin:5px 6px 5px 0;transition:background .12s,border-color .12s}button:hover{background:#384541;border-color:#758a80}button.primary{background:var(--accent);color:#172e24;border-color:var(--accent);font-weight:650}button.primary:hover{background:#c4f3da}button:disabled{opacity:.4;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.fr-notice{border:1px solid var(--accent);border-radius:10px;padding:14px 18px;margin:16px 0;background:#16231d}.fr-notice p{margin:7px 0;color:#c2d4c9;font-size:13.5px}.fr-notice ol{margin:8px 0 8px;padding-left:22px;color:#c2d4c9;font-size:13.5px}.fr-notice li{margin:5px 0}.fr-notice strong{color:#d5dedc}.fr-notice em{color:#aae4c8;font-style:normal}[hidden]{display:none!important}nav{display:flex;gap:3px;border-bottom:1px solid #333c3b;margin-bottom:22px}nav button{background:transparent;border:0;border-radius:0;margin:0 22px 0 0;padding:10px 1px 13px;font-size:13px;color:#889a98;border-bottom:2px solid transparent}nav button[aria-selected=true]{color:#d1eee0;border-bottom-color:var(--accent)}section{padding:22px;border:1px solid #343e3d;border-radius:12px;background:#1b2221;margin:20px 0}#tab-sim{border:0;background:none;padding:0;margin:0}#tab-library,#tab-update{max-width:720px;margin:28px auto}.sim-toolbar{display:flex;gap:10px;align-items:center;margin:0 0 18px;flex-wrap:wrap}.sim-toolbar button{margin:0;font-size:12px;padding:8px 14px}.sim-health{display:flex;align-items:center;gap:9px;font-size:11px;color:#96a8a0}.sim-health:before{content:"";width:6px;height:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px #aae4c844}.sim-health span+span{border-left:1px solid #46534d;padding-left:9px;color:#6f8379}.sim-toolbar label{margin:0 0 0 auto;display:flex;gap:8px;align-items:center;font-size:11px;color:#879b93}.sim-toolbar input{width:85px;accent-color:var(--accent)}
 .device-scroll{overflow:auto;padding:10px 18px 28px;margin:0 -18px;scrollbar-color:#465951 transparent}.sim-device{container-type:inline-size;position:relative;width:100%;min-width:720px;aspect-ratio:1000/624;border:1px solid #505453;border-radius:2.5%;background:linear-gradient(145deg,#343838 0%,#292d2e 40%,#252829 100%);box-shadow:inset 0 1px 1px #949b9680,inset 0 -5px 0 #161b1b,0 4px 0 #0c1010,0 12px 24px #0007,0 30px 60px #0004;user-select:none;-webkit-user-select:none}.sim-device:after{pointer-events:none;content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(100deg,#ffffff04,transparent 55%)}.device-brand{position:absolute;left:5.2%;top:3%;font:700 1.3cqw/1 Consolas,"Liberation Mono",monospace;letter-spacing:.15em;color:#b3bcb7}.device-brand span{font-size:.8cqw;font-weight:400;color:#75817c;margin-left:1cqw;letter-spacing:.08em}.case-mark{position:absolute;right:4.8%;top:3%;font:.8cqw Consolas,"Liberation Mono",monospace;letter-spacing:.18em;color:#778680}.screw{position:absolute;width:.7%;height:1.12%;border-radius:50%;background:linear-gradient(45deg,#171b1a 45%,#747d7855 48%,#1a1e1c 55%);box-shadow:0 1px 1px #69746a50}.screw.tl{left:2%;top:3%}.screw.tr{right:2%;top:3%}.screw.bl{left:2%;bottom:3%}.screw.br{right:2%;bottom:3%}.screen-bezel{position:absolute;left:29.2%;top:7.05%;width:25.6%;height:41.03%;padding:.8%;border:1px solid #111615;background:#101513;border-radius:2%;box-shadow:0 1px 1px #73807760,inset 0 2px 5px #0008}#sim-screen{display:block;width:100%;height:100%;image-rendering:pixelated;background:#000;border:1px solid #0d1110}.screen-placeholder{position:absolute;inset:8%;display:grid;place-content:center;text-align:center;color:#89988c;font:1.1cqw/1.8 system-ui}.screen-placeholder strong{color:var(--accent);font-size:3cqw;letter-spacing:.16em}.screen-caption{position:absolute;top:48.9%;left:29.2%;width:25.6%;display:flex;justify-content:space-between;font:.67cqw Consolas,"Liberation Mono",monospace;letter-spacing:.15em;color:#718077}.encoder{position:absolute;width:8%;height:7.7%;transform:translate(-50%,-50%);text-align:center;z-index:2}.encoder>span{position:absolute;bottom:calc(100% + 1.1cqw);left:-12%;right:-12%;font:600 1cqw/1 Consolas,"Liberation Mono",monospace;color:#b6c4bd;letter-spacing:.04em}.encoder .dial{display:block;position:relative;width:60%;height:100%;margin:0 auto;padding:0;border:2px solid #111815;border-radius:50%;background:radial-gradient(circle at 38% 28%,#59625c 0%,#3c4740 45%,#262f29 75%,#141c17 90%);box-shadow:0 .35cqw .45cqw #0009,inset 0 .1cqw .15cqw #99a59790;touch-action:none}.encoder .dial:hover{border-color:#8baca0}.dial i{position:absolute;left:calc(50% - 1px);top:8%;width:2px;height:27%;border-radius:1px;background:#d0e6d7;transform-origin:50% 154%;transform:rotate(var(--angle,0deg));box-shadow:0 0 .3cqw #d3fadd40}.detents{position:absolute;left:0;right:0;top:calc(100% + .55cqw);display:flex;justify-content:center;gap:.5cqw;opacity:0;transition:opacity .1s}.encoder:hover .detents,.encoder:focus-within .detents{opacity:1}.detents button{width:2.8cqw;height:1.9cqw;margin:0;padding:0;font:1.3cqw/1 system-ui;border:1px solid #53665a;border-radius:.3cqw;background:#222c26;color:#bdd2c3}.panel-button{position:absolute;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;padding:0;border:1px solid #141d18;border-top-color:#81938b60;border-radius:.7cqw;color:#c1d2c8;background:linear-gradient(#45534b,#38463e);box-shadow:0 .3cqw 0 #111c15,0 .45cqw .5cqw #0006,inset 0 .12cqw .12cqw #b4cebc22;font:600 1cqw/1.35 Consolas,"Liberation Mono",monospace;letter-spacing:.025em;touch-action:none}.panel-button:hover{background:linear-gradient(#53665a,#465d4f);border-color:#99baa170}.panel-button small{font:.58cqw/1.2 Consolas,"Liberation Mono",monospace;color:#829b89}.panel-button[data-button="12"]{color:#c4e8b3}.panel-button[data-button="13"]{color:#f6b4a1}.panel-button.lit{background:linear-gradient(#54745e,#45634f);color:#e7ffe1;border-top-color:#b2dcad}.panel-button.held{box-shadow:0 .1cqw 0 #15251b,inset 0 .2cqw .4cqw #09130c99;transform:translateY(.2cqw);background:#607d65}.panel-button.latched{outline:1px solid #c5e59c;outline-offset:2px}.panel-button.latched:after{position:absolute;right:.4cqw;top:.35cqw;width:.35cqw;height:.35cqw;border-radius:50%;background:#e0f9aa;content:""}
 .keyboard{position:absolute;left:3.6%;top:53.2%;width:92.8%;height:41%;border-radius:1cqw;border:1px solid #111916;background:linear-gradient(#171e1a,#1c231f);box-shadow:inset 0 .35cqw .5cqw #0006,0 .1cqw 0 #66776d40}.piano-key{position:absolute;transform:translateX(-50%);margin:0;padding:0;border:1px solid #0e1510;border-radius:2.3cqw;width:4.35%;background:linear-gradient(110deg,#3e4b40,#2b392e 55%,#212d24);box-shadow:inset .15cqw 0 .25cqw #8ea79244,0 .4cqw .4cqw #0009;touch-action:none;opacity:1!important;color:#7f9888}.piano-key.white{top:48%;height:43%}.piano-key.black{top:6%;height:37%;width:4.1%;background:linear-gradient(110deg,#333b35,#212b23 55%,#1b241d)}.piano-key>i{position:absolute;left:calc(50% - 1px);width:2px;top:17%;height:48%;border-radius:1px;background:#5a7660;box-shadow:inset 0 0 1px #07150a}.piano-key span{position:absolute;bottom:10%;left:-10%;right:-10%;font:.75cqw/1 Consolas,"Liberation Mono",monospace;letter-spacing:.025em}.piano-key.black span{font-size:.65cqw;bottom:11%}.piano-key:hover{border-color:#91b697;background:#415b47}.piano-key.held{background:linear-gradient(#67866a,#4e6e53);transform:translate(-50%,.22cqw);box-shadow:inset 0 .25cqw .35cqw #152b1890,0 .1cqw .2cqw #0007}.piano-key.lit>i,.piano-key.held>i{background:#c3f5a4;box-shadow:0 0 .65cqw #a0ec79aa}.piano-key.lit span,.piano-key.held span{color:#c8e3bf}.panel-caption{display:flex;justify-content:space-between;gap:16px;margin:-8px 0 0;font-size:11px;color:#71847c}.sim-status{font-size:12px;min-height:24px;color:#bfdbc9;margin:15px 0 18px;padding:10px 14px;background:#1b262080;border-left:2px solid #536e5a;border-radius:0 4px 4px 0}.sim-details{border-top:1px solid #323e37;padding-top:14px;margin-top:14px}.sim-details summary{cursor:pointer;font-size:13px;color:#9fb6a8;list-style-position:inside}.sim-details summary:hover{color:#d3edde}.sim-help{font-size:12px;color:#92a69a}.sim-help li{margin:8px 0}.sim-file-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:13px}.sim-file-row button{font-size:12px;margin:0;padding:8px 12px}.sim-file-row input,.sim-file-row select{font-size:12px}.sim-selectors{display:flex;gap:12px;margin:16px 0}.sim-selectors label{flex:1;margin:0;font-size:11px;color:#8fa596}.sim-selectors select{display:block;width:100%;margin-top:5px}.track-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}.track-tile{text-align:left;margin:0;padding:8px 10px;min-width:0;font-size:12px;background:#1c2821;border-color:#3c5042}.track-tile.selected{border-color:#9bc9a7;background:#314b3a}.track-number{color:#80958a;font-size:10px;margin-right:6px}.track-source{font-weight:650}.track-level{display:block;height:2px;margin:7px 0;background:linear-gradient(to right,#a1e5c4 var(--level,0%),#304138 var(--level,0%))}.track-steps{display:grid;grid-template-columns:repeat(16,1fr);gap:2px}.track-steps i{height:3px;background:#354c3d}.track-steps i.on{background:#81ba8f}.track-steps i.play{background:#eced9a}.track-steps i.outside{visibility:hidden}.quiet-note{margin:18px 0 0;font-size:11px;color:#718779}label{display:block;margin:18px 0 10px;font-size:13px}select,input[type=text],input[type=file]{font:inherit;max-width:100%;padding:8px;background:#111915;color:#e2ece6;border:1px solid #43574a;border-radius:6px}dl{display:grid;grid-template-columns:88px 1fr;gap:10px;margin:0;font-size:13px}dt{color:#8a9d90}dd{margin:0;overflow-wrap:anywhere}code{font-size:12px}progress{width:100%;height:8px;accent-color:var(--accent)}#status{min-height:48px;color:#e9eef4}small{display:block;color:#8b9d90;font-size:11px}#error{color:#ffb6ad;white-space:pre-wrap}.library-message{white-space:pre-wrap;min-height:28px}.boot-warning{padding:14px;background:#573826;color:#ffe7b5}.boot-warning p{color:inherit}
 @media(max-width:850px){main{padding:24px 20px}.track-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.panel-caption{flex-wrap:wrap;gap:4px}.sim-toolbar label{display:none}.version-tag{font-size:9px}.sim-health{margin-left:auto}}
@@ -50,7 +50,7 @@ button{border-radius:7px;background:#223039;border-color:#3b4b54;color:#d6e3e6;f
 .lcd-surface{position:relative;width:100%;height:100%}#sim-lcd-targets{position:absolute;inset:0}.lcd-target{position:absolute;margin:0;padding:0;min-width:0;border:0;border-radius:0;background:transparent;color:transparent;opacity:1}.lcd-target:hover,.lcd-target:focus-visible{background:#a9efd722;outline:1px solid #a9efd7;outline-offset:-1px}.lcd-target:disabled{pointer-events:none;background:transparent;opacity:0}.lcd-editor{text-align:center;max-width:360px;width:calc(100% - 32px)}.lcd-editor h3{font-size:24px;margin:6px 0}.lcd-value{font:32px/1.4 Consolas,monospace;color:#a9efd7;margin:12px}.lcd-adjust{display:flex;gap:12px;justify-content:center}.lcd-adjust button{font-size:24px;width:90px;margin:0}
 </style>
 <main>
-<header class="site-header"><div class="brand"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M4 16h4l3-9 5 18 5-18 3 9h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>FM1<span>M-VAVE</span></b></div><h1>工作台</h1><span id="release-version" class="release-badge"></span><label class="language-picker">Language / 语言 <select id="language" aria-label="Language / 语言"><option value="en">English</option><option value="zh-CN">简体中文</option></select></label><button id="about-open" class="about-button" aria-haspopup="dialog" aria-controls="about-dialog">关于</button></header>
+<header class="site-header"><div class="brand"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><path d="M4 16h4l3-9 5 18 5-18 3 9h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>FM1<span>M-VAVE</span></b></div><h1>工作台</h1><span id="release-version" class="release-badge"></span><label class="language-picker">Langue · Language · 语言 <select id="language" aria-label="Language / 语言"><option value="fr">Français</option><option value="en">English</option><option value="zh-CN">简体中文</option></select></label><button id="about-open" class="about-button" aria-haspopup="dialog" aria-controls="about-dialog">关于</button></header>
 <dialog id="sim-lcd-dialog" class="save-dialog lcd-editor" aria-labelledby="sim-lcd-title">
 <h2 id="sim-lcd-title">LCD 参数编辑</h2><h3 id="sim-lcd-label"></h3><div id="sim-lcd-value" class="lcd-value"></div>
 <div class="lcd-adjust"><button id="sim-lcd-minus" aria-label="减少参数">−</button><button id="sim-lcd-plus" aria-label="增加参数">＋</button></div>
@@ -92,7 +92,7 @@ button{border-radius:7px;background:#223039;border-color:#3b4b54;color:#d6e3e6;f
 </div>
 </section>
 <section id="tab-update" role="tabpanel" aria-labelledby="mode-update" hidden>
-<h2>更新固件</h2><p id="update-intro">正在校验本页内置固件。请连接 FM1 的 USB-MIDI 接口。</p>
+<h2>更新固件</h2><p id="update-intro">正在校验本页内置固件。请连接 FM1 的 USB-MIDI 接口。</p><div class="fr-notice" lang="fr"><p><strong>Compatible avec toutes les pédales FM-1 d’origine : V14, V15 et V16.</strong> La « version » affichée ci-dessous (V14) est celle de la base du firmware RIDDIM BOX — elle n’a pas d’importance : le flash remplace entièrement le firmware de la pédale, quelle que soit sa version actuelle (V16 incluse).</p><ol><li>Utilisez <strong>Chrome ou Edge</strong> sur PC (pas Firefox ni Safari). Si le navigateur demande l’autorisation <em>MIDI / SysEx</em>, acceptez-la.</li><li>Pédale <strong>allumée</strong> branchée en USB : cliquez <strong>« Connecter la pédale »</strong>, puis choisissez le FM1 dans la fenêtre du navigateur.</li><li>Cochez la case de sauvegarde, puis <strong>« Commencer la mise à jour »</strong>, et confirmez. L’écriture dure quelques minutes — ne débranchez rien.</li><li>Si le message « autre firmware détecté » apparaît (pédale en V16 ou V15), c’est normal : cliquez <strong>« Activer le flash forcé et reconnecter »</strong>, recochez la sauvegarde, puis <strong>« Flash forcé »</strong> et confirmez le risque. C’est la procédure normale de migration.</li></ol><p>Après l’installation, la pédale affiche <strong>RIDDIM BOX</strong> à l’allumage. Pour revenir au firmware d’origine V15, utilisez « Réinstaller le V15 d’origine ».</p></div>
 <dl><dt>固件</dt><dd id="profile">正在校验…</dd><dt>版本</dt><dd id="firmware-version"></dd></dl>
 <details class="technical-details"><summary>固件详情</summary><dl><dt>文件大小</dt><dd id="size"></dd><dt>构建编号</dt><dd><code id="version"></code></dd></dl></details>
 <label class="update-choice"><input id="backup" type="checkbox"> 已保存需要保留的音色、工程和采样</label>
@@ -4740,6 +4740,116 @@ Public License instead of this License.  But first, please read
   "连接超时，请检查 USB 连接和 MIDI 权限后重试。": "Connection timed out. Check USB and MIDI permissions, then retry.",
   "正在编码采样…": "Encoding sample audio…"
 };
+  const FRENCH={
+"FM1 工作台": "Atelier FM1 — RIDDIM BOX",
+"工作台": "Atelier FM1",
+"关于": "À propos",
+"关闭": "Fermer",
+"演奏与编辑": "Jouer et éditer",
+"项目与音色": "Projets et sons",
+"设备更新": "Mise à jour de l’appareil",
+"使用说明": "Mode d’emploi",
+"更新固件": "Mettre à jour le firmware",
+"正在校验本页内置固件。请连接 FM1 的 USB-MIDI 接口。": "Vérification du firmware intégré à cette page. Connectez l’interface USB-MIDI du FM1.",
+"固件": "Firmware",
+"版本": "Version",
+"正在校验…": "Vérification…",
+"固件详情": "Détails du firmware",
+"文件大小": "Taille du fichier",
+"构建编号": "Numéro de build",
+"已保存需要保留的音色、工程和采样": "J’ai sauvegardé les sons, projets et échantillons à conserver",
+"恢复与强制更新": "Restauration et flash forcé",
+"刷回原厂 V15": "Réinstaller le V15 d’origine",
+"切回官方 Open 固件": "Revenir au firmware Open officiel",
+"强制烧录（其他固件迁移）": "Flash forcé (migration depuis un autre firmware)",
+"回刷将安装原厂 V15，并覆盖四个音色库，恢复 128 个出厂音色。Open 项目与采样格式不兼容，请先导出备份。已是 V15 时只恢复音色；确认后才开始写入。": "La restauration réinstalle le V15 d’origine et remplace les quatre banques par les 128 sons d’usine. Les projets et échantillons Open sont incompatibles ; exportez vos sauvegardes d’abord. Si la pédale est déjà en V15, seuls les sons sont restaurés ; l’écriture ne démarre qu’après confirmation.",
+"警告：内置固件可能与当前设备不兼容。强制烧录可能清除数据、导致无法开机，并需要专用工具恢复。请只连接目标 FM1；不支持 USB-MIDI 升级协议的固件仍无法通过本页烧录。": "Attention : le firmware intégré peut être incompatible avec l’appareil actuel. Un flash forcé peut effacer des données, empêcher le démarrage et nécessiter un outil de récupération. Ne connectez que le FM1 ciblé ; un firmware sans protocole de mise à niveau USB-MIDI reste impossible à flasher depuis cette page.",
+"连接设备": "Connecter la pédale",
+"开始更新": "Commencer la mise à jour",
+"启用强制烧录并重新连接": "Activer le flash forcé et reconnecter",
+"正在检查网页内容…": "Vérification du contenu de la page…",
+"更新进度": "Progression de la mise à jour",
+"连接详情": "Détails de connexion",
+"以下是浏览器本次检测到的端口；信息仅显示在本页。": "Voici les ports détectés par le navigateur pour cette tentative ; ces informations restent sur cette page.",
+"更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。": "Pendant la mise à jour, gardez l’alimentation et l’USB branchés ; en cas d’interruption, réessayez avec cette même version de page.",
+"更新帮助": "Aide à la mise à jour",
+"09 · 更新固件": "09 · Mettre à jour le firmware",
+"正在加载固件…": "Chargement du firmware…",
+"固件校验通过，等待连接设备": "Firmware vérifié ; en attente de la connexion de la pédale",
+"连接 FM1，确认备份后点击“开始更新”。": "Connectez le FM1, confirmez la sauvegarde puis cliquez « Commencer la mise à jour ».",
+"本页缺少内置固件，无法烧录。请重新下载完整官方工作台。": "Le firmware intégré est absent de cette page ; flash impossible. Retéléchargez l’atelier complet officiel.",
+"内置固件不可用，请重新下载完整官方工作台。": "Firmware intégré indisponible ; retéléchargez l’atelier complet officiel.",
+"网页试听与编辑": "Écoute et édition dans le navigateur",
+"未附带设备固件": "Firmware d’appareil non inclus",
+"原厂 V15（FM-1_015）": "V15 d’origine (FM-1_015)",
+"官方 Open 固件": "Firmware Open officiel (RIDDIM BOX)",
+"当前浏览器不支持 Web MIDI，请使用电脑 Chrome 或 Edge": "Ce navigateur ne gère pas Web MIDI ; utilisez Chrome ou Edge sur ordinateur",
+"正在请求 MIDI 访问并初始化端口；若浏览器提示，请允许 MIDI / SysEx。": "Demande d’accès MIDI et initialisation des ports ; si le navigateur le demande, autorisez MIDI / SysEx.",
+"MIDI 权限已允许，正在等待浏览器初始化设备端口…": "Permission MIDI accordée ; attente de l’initialisation des ports par le navigateur…",
+"请允许浏览器使用 MIDI / SysEx": "Autorisez le navigateur à utiliser MIDI / SysEx",
+"连接超时，请检查 USB 连接和 MIDI 权限后重试。": "Connexion expirée ; vérifiez le câble USB et les permissions MIDI, puis réessayez.",
+"已取消连接。": "Connexion annulée.",
+"取消连接": "Annuler la connexion",
+"已连接 FM1，可开始更新": "FM1 connecté ; vous pouvez lancer la mise à jour",
+"已识别设备和当前固件；迁移请点击“启用强制烧录并重新连接”。": "Pédale et firmware actuels reconnus ; pour migrer, cliquez « Activer le flash forcé et reconnecter ».",
+"已是当前版本，无需更新。": "Version déjà installée ; aucune mise à jour nécessaire.",
+"已连接升级模式，可继续写入这个版本": "Connecté en mode mise à niveau ; l’écriture peut reprendre",
+"已连接原厂 V15，可恢复出厂音色。": "V15 d’origine connecté ; les sons d’usine peuvent être restaurés.",
+"已连接；开始强制烧录前将再次确认设备和兼容风险。": "Connecté ; l’appareil et les risques de compatibilité seront confirmés avant le flash forcé.",
+"尚未连接": "Pas encore connecté",
+"设备已断开，请重新连接。": "Pédale déconnectée ; reconnectez-la.",
+"检测到其他固件：可点击“启用强制烧录并重新连接”。": "Autre firmware détecté : cliquez « Activer le flash forcé et reconnecter ».",
+"固件已更新，正在检查采样区…": "Firmware mis à jour ; vérification de la zone d’échantillons…",
+"下一步：连接设备。": "Étape suivante : connecter la pédale.",
+"下一步：勾选已备份确认，才能开始烧录。": "Étape suivante : cochez la confirmation de sauvegarde pour autoriser le flash.",
+"下一步：恢复原厂固件和音色，确认后开始写入。": "Étape suivante : restaurez le firmware et les sons d’origine ; l’écriture démarre après confirmation.",
+"下一步：点击“强制烧录”，阅读并确认兼容风险。": "Étape suivante : cliquez « Flash forcé », lisez puis confirmez le risque de compatibilité.",
+"下一步：点击“开始更新”。": "Étape suivante : cliquez « Commencer la mise à jour ».",
+"设备操作进行中，请稍候。": "Opération en cours sur l’appareil ; veuillez patienter.",
+"更新已完成，可以开始使用 FM1，无需再次烧录。": "Mise à jour terminée ; votre FM1 est prêt, plus besoin de flasher.",
+"固件已更新；下一步：在“项目与音色”中检查或恢复采样库。": "Firmware mis à jour ; étape suivante : vérifiez ou restaurez la banque d’échantillons dans « Projets et sons ».",
+"原厂 V15 和 128 个出厂音色已恢复。请切换音色试听。": "V15 d’origine et 128 sons d’usine restaurés. Changez de son pour écouter.",
+"固件加载失败，请重新打开设备更新页重试。": "Échec du chargement du firmware ; rouvrez la page de mise à jour et réessayez.",
+"已切换到网页烧录；使用项目库时请重新连接。": "Basculé vers le flash via la page ; reconnectez pour utiliser la bibliothèque de projets.",
+"已切换到项目库；烧录前请重新连接。": "Basculé vers la bibliothèque de projets ; reconnectez avant de flasher.",
+"拔插 USB 后重新点击连接即可；页面会清除旧设备信息。烧录与项目库切换时按提示重新连接。固件写入后请等待采样检查完成；“固件已更新”但采样未就绪时，只需检查或恢复采样库，无需重复烧录。": "Après avoir débranché puis rebranché l’USB, cliquez à nouveau « Connecter la pédale » ; la page efface les anciennes informations de l’appareil. Reconnectez quand vous basculez entre flash et bibliothèque de projets. Après l’écriture, attendez la fin de la vérification des échantillons ; si « firmware mis à jour » s’affiche mais que les échantillons ne sont pas prêts, vérifiez ou restaurez simplement la banque, sans reflasher.",
+"正常连接已识别其他固件（例如 FM-1_015）时，点击 启用强制烧录并重新连接。这一步只开启模式并重新连接，不会写入固件。页面会说明接下来缺少哪一步；确认已备份后，再点 强制烧录 并确认兼容风险才会开始。也可点击强制烧录勾选行的任意位置开启。设备仍需支持兼容的 USB-MIDI 升级协议。": "Quand une connexion normale reconnaît un autre firmware (par exemple FM-1_015), cliquez « Activer le flash forcé et reconnecter ». Cette étape active seulement le mode et reconnecte ; rien n’est écrit. La page indique l’étape suivante ; après avoir confirmé votre sauvegarde, cliquez « Flash forcé » et acceptez l’avertissement de compatibilité pour démarrer. Vous pouvez aussi cliquer n’importe où sur la ligne du flash forcé. L’appareil doit toujours prendre en charge un protocole de mise à niveau USB-MIDI compatible.",
+"浏览器未发现完整的 MIDI 输入和输出。请连接开机的 FM1 USB-MIDI 接口，再重新连接。": "Le navigateur n’a pas trouvé de paire MIDI entrée + sortie complète. Branchez le FM1 allumé sur son interface USB-MIDI, puis reconnectez.",
+"已发现 MIDI 端口，但无法匹配 FM1 输入和输出。请查看连接详情，只保留目标 FM1 后重试。": "Des ports MIDI ont été trouvés, mais impossible d’associer l’entrée et la sortie du FM1. Consultez « Détails de connexion », ne laissez branché que le FM1 ciblé, puis réessayez.",
+"已找到 MIDI 端口，但设备未回复型号。请关闭其他 MIDI 软件和更新网页，重新开机并插拔 USB 后重试；强制烧录也需要设备先响应。": "Des ports MIDI ont été trouvés, mais l’appareil n’a pas répondu à la demande d’identité. Fermez les autres logiciels MIDI et les pages de mise à jour, redémarrez la pédale, débranchez puis rebranchez l’USB, puis réessayez ; le flash forcé exige aussi une réponse de l’appareil.",
+"等待设备重连超时；请保留这个更新网页，重新连接同一台设备后重试": "Délai dépassé en attendant la reconnexion de l’appareil ; gardez cette page ouverte et reconnectez le même appareil.",
+"设备已识别；请开启强制烧录并重新连接": "Appareil reconnu ; activez le flash forcé puis reconnectez",
+"强制烧录尚未确认": "Flash forcé non confirmé",
+"请重新连接设备": "Reconnectez l’appareil",
+"请先连接设备": "Connectez d’abord l’appareil",
+"设备身份响应无效": "Réponse d’identité de l’appareil invalide",
+"设备身份已改变，请重新连接": "L’identité de l’appareil a changé ; reconnectez-le",
+"设备正在处理另一次升级": "L’appareil traite déjà une autre mise à niveau",
+"设备扩展能力回复无效": "Réponse de capacité étendue de l’appareil invalide",
+"烧录模式已改变，请重新连接设备。": "Le mode de flash a changé ; reconnectez l’appareil.",
+"烧录目标已改变，请核对版本和备份。": "La cible de flash a changé ; vérifiez la version et votre sauvegarde.",
+"确认强制烧录？当前设备：": "Confirmer le flash forcé ? Appareil actuel : ",
+"警告：可能与设备不兼容，可能丢失数据或无法开机，需要专用工具恢复。仅当确认目标设备为 FM1 并接受风险时继续。": "Attention : risque d’incompatibilité, de perte de données ou de démarrage impossible ; un outil de récupération peut être nécessaire. Ne continuez que si l’appareil ciblé est bien un FM1 et que vous acceptez ces risques.",
+"网页固件信息无效": "Informations de firmware de la page invalides",
+"原厂固件校验失败": "Échec de la vérification du firmware d’origine",
+"刷入原厂 V15": "Installer le V15 d’origine",
+"恢复原厂音色": "Restaurer les sons d’usine",
+"原厂音色数据无效": "Données de sons d’usine invalides",
+"恢复音色需要原厂 V15": "La restauration des sons exige le V15 d’origine",
+"设备拒绝恢复原厂音色": "L’appareil a refusé la restauration des sons d’usine",
+"原厂音色恢复未完成；请重新连接原厂 V15 后重试": "Restauration des sons d’usine incomplète ; reconnectez le V15 d’origine et réessayez",
+"正在恢复四个原厂音色库": "Restauration des quatre banques de sons d’usine",
+"确认恢复原厂 V15 和 128 个出厂音色？四个音色库会被覆盖，Open 项目与采样可能被清除。已是 V15 时只恢复音色。当前设备：": "Restaurer le V15 d’origine et les 128 sons d’usine ? Les quatre banques seront remplacées ; les projets et échantillons Open peuvent être effacés. Si l’appareil est déjà en V15, seuls les sons sont restaurés. Appareil actuel : ",
+"点击“刷回原厂 V15”，连接设备、勾选备份确认，再点击“刷入原厂 V15”并确认。网页会安装内置 V15，随后恢复四个库的 128 个出厂音色；已有音色会被覆盖。已是 V15 的设备会显示“恢复原厂音色”，无需重复刷固件。恢复中断时，重新连接并重试；完成后切换音色试听。Open 项目与采样不能用于原厂固件，原厂也不提供 Open 的构建哈希读回或项目库功能。回到 Open 时，点击“切回官方 Open 固件”并按强制烧录流程操作。不支持外部固件文件。": "Cliquez « Réinstaller le V15 d’origine », connectez la pédale, cochez la confirmation de sauvegarde, puis cliquez « Installer le V15 d’origine » et confirmez. La page installe le V15 intégré puis restaure les 128 sons d’usine des quatre banques ; les sons existants sont remplacés. Un appareil déjà en V15 affiche « Restaurer les sons d’usine » sans reflasher. En cas d’interruption, reconnectez et réessayez ; après la fin, changez de son pour écouter. Les projets et échantillons Open ne fonctionnent pas sur le firmware d’origine. Pour revenir à Open, cliquez « Revenir au firmware Open officiel » et suivez la procédure de flash forcé. Les fichiers de firmware externes ne sont pas pris en charge.",
+"正在编码采样…": "Encodage des échantillons…",
+"在“项目与音色”备份当前项目与采样库，其他需要保留的项目槽也逐一载入并备份。独立音色库 A–D 四组分别“读取此组”并“导出此组 .syx”；PLAY 轨的音色修改另行导出，DX7 也可存入独立库后再备份。": "Dans « Projets et sons », sauvegardez le projet courant et la banque d’échantillons, puis chargez et sauvegardez un par un les autres emplacements de projets à conserver. Pour chacun des quatre groupes de sons indépendants A–D, faites « Lire ce groupe » puis « Exporter ce groupe en .syx ». Exportez à part les modifications de timbre des pistes PLAY ; le DX7 peut aussi être sauvegardé dans la bibliothèque indépendante.",
+"正常完成的同布局更新会保留有效项目槽和采样库；刷写前仍请分别备份工程、音色和采样。设备重启后，未保存的内存编辑不会自动恢复。固件更新也不会自动把网页仿真中的项目传到设备。": "Une mise à jour réussie de même disposition de stockage conserve les emplacements de projets valides et la banque d’échantillons. Sauvegardez quand même projets, sons et échantillons séparément avant de flasher. Les éditions non sauvegardées ne sont pas restaurées au redémarrage. La mise à jour ne transfère pas automatiquement le projet du navigateur vers l’appareil.",
+"等待重启及版本核对。如果提示采样未就绪，在采样页写入对应的 .fm1s 备份。写入内置采样库会替换全部 8 槽，不能找回原来的自定义采样。": "Attendez le redémarrage et la vérification de version. Si les échantillons ne sont pas prêts, écrivez la sauvegarde .fm1s correspondante depuis la page des échantillons. Écrire la banque intégrée remplace les 8 emplacements ; les échantillons personnalisés d’origine ne sont pas récupérables.",
+"下载完整 HTML 后可离线试听和编辑；读写设备需要支持 Web MIDI 的电脑 Chrome／Edge 和 USB 数据线，并允许 MIDI／SysEx。不能连接时先关闭占用 MIDI 的其他网页或软件，再重新连接。默认输入通道：轨 1–7 使用通道 1–7，轨 8 使用通道 10；可在 TRACK ROLE 修改。": "Téléchargez le HTML complet pour jouer et éditer hors ligne ; la lecture et l’écriture sur l’appareil exigent Chrome ou Edge (Web MIDI), un câble USB de données et l’autorisation MIDI/SysEx. Si la connexion échoue, fermez d’abord les autres pages ou logiciels qui utilisent le MIDI, puis reconnectez.",
+"静音": "Sourdine",
+"取消静音": "Réactiver le son"
+};
+
   // Only complete UI messages are matched. Captured project, preset and port
   // names are kept verbatim; no blanket replacement of user data is performed.
   const patterns=[
@@ -4782,6 +4892,7 @@ Public License instead of this License.  But first, please read
   function t(value,locale=language,depth=0){
     const source=String(value??'');
     if(locale==='zh-CN')return source;
+    if(locale==='fr'&&Object.hasOwn(FRENCH,source))return FRENCH[source];
     if(Object.hasOwn(messages,source))return messages[source];
     if(depth<3)for(const [pattern,format]of patterns){
       const match=source.match(pattern);if(match)return format(match,s=>t(s,locale,depth+1));
@@ -4832,7 +4943,7 @@ Public License instead of this License.  But first, please read
     return [...node.childNodes].map(sourceText).join('');
   }
   function setLanguage(next){
-    language=next==='zh-CN'?'zh-CN':'en';
+    language=next==='zh-CN'?'zh-CN':next==='fr'?'fr':'en';
     if(typeof document==='undefined')return;
     document.documentElement.lang=language;
     for(const [node,fields]of bindings){
@@ -4848,7 +4959,7 @@ Public License instead of this License.  But first, please read
     // English is the first-visit default. An explicit query or saved choice wins.
     let saved;try{saved=localStorage.getItem('fm1-language');}catch(_){}
     const requested=new URLSearchParams(location.search).get('lang');
-    language=(requested||saved)==='zh-CN'?'zh-CN':'en';
+    language=(requested||saved)==='zh-CN'?'zh-CN':(requested||saved)==='en'?'en':'fr';
     scan(document);setLanguage(language);
     // Dynamic LCD targets and device lists replace nodes during normal use.
     // Release detached translation bindings without waiting for a language switch.
@@ -7110,4 +7221,5 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
 })();
 
 </script>
+<script>(()=>{try{if(/update/i.test(location.hash)){const b=document.getElementById("mode-update");if(b)b.click();}}catch(_){}})();</script>
 </html>
