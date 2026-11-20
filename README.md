@@ -12,7 +12,7 @@
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
 SHA-256 : `aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894`
-Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `0932344e802303512d6534e81b7118ccad91107cc0bb73a54f3ae0bb7b988946` (interface française, notice V14/V15/V16 intégrée)
+Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `d9f9395a1f26de31d4168fc576a3f7f8f0cf7135e6c5ed046cd136f24d8b31b2` (interface française, notice V14/V15/V16 intégrée, journal de diagnostic avec bouton « Copier le diagnostic »)
 
 ---
 
@@ -163,6 +163,8 @@ Le workbench en ligne de M-VAVE (<https://open.m-vave.com/fm1-workbench>) **n'ac
 2. Pédale **allumée** branchée en USB : cliquer **« Connecter la pédale »** et choisir le FM1 dans la fenêtre du navigateur ;
 3. Cocher la case de sauvegarde, puis **« Commencer la mise à jour »** et confirmer. Si la pédale est en V16 (ou toute autre version non reconnue), la page demande **« Activer le flash forcé et reconnecter »** : cliquer, recocher la sauvegarde, puis **« Flash forcé »** et confirmer — c'est la procédure normale de migration ;
 4. Le transfert utilise le protocole USB-MIDI officiel avec **vérification CRC** et contrôle de version après redémarrage ; un échec laisse la machine bootable ;
+   - **Compatibilité étendue pour les FM1 récents (nouvelle puce)** : le bootloader est désormais reconnu quelle que soit l'identité `ota*` qu'il signale (au lieu d'une identité exacte), les lectures au-delà de la fin de l'image sont complétées par des zéros jusqu'à la frontière de 512 octets, et les délais d'attente sont portés à 75 s (reconnexion) et 300 s (écriture) ;
+   - **Si le flash bloque** : cliquer **« Copier le diagnostic »** dans l'onglet mise à jour — le journal complet (identités détectées, étapes, erreurs MIDI, ports USB) est copié dans le presse-papiers ; le coller dans un retour de bug pour analyse. Un repli télécharge `fm1-diagnostic.txt` si le presse-papiers est bloqué ;
 5. **Retour arrière possible** : la page embarque aussi la V15 d'origine (« Réinstaller le V15 d'origine ») pour revenir au firmware M-VAVE.
 
 Vérifier l'empreinte avant installation :

@@ -106,7 +106,7 @@ button{border-radius:7px;background:#223039;border-color:#3b4b54;color:#d6e3e6;f
 <progress id="progress" value="0" max="100" aria-label="更新进度"></progress>
 <p id="error" role="alert"></p>
 <details id="connection-details" hidden><summary>连接详情</summary><p>以下是浏览器本次检测到的端口；信息仅显示在本页。</p><p><strong>MIDI IN</strong></p><ul id="connection-inputs"></ul><p><strong>MIDI OUT</strong></p><ul id="connection-outputs"></ul><ul id="connection-attempts"></ul></details>
-<small>更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。</small><p><a href="#manual-update">更新帮助</a></p>
+<small>更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。</small><p><a href="#manual-update">更新帮助</a> · <button id="copy-diagnostics" type="button">复制诊断信息</button></p>
 </section>
 <section id="tab-library" role="tabpanel" aria-labelledby="mode-library" hidden>
 <h2 id="library-title">项目与音色</h2>
@@ -4013,7 +4013,7 @@ Public License instead of this License.  But first, please read
   "固件详情": "Firmware details",
   "恢复与强制更新": "Recovery & force update",
   "更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。": "Keep power and USB connected. If interrupted, retry with the same version of this page.",
-  "更新帮助": "Update help",
+  "更新帮助": "Update help","复制诊断信息": "Copy diagnostics","诊断已复制到剪贴板": "Diagnostics copied to clipboard","诊断已下载 (fm1-diagnostic.txt)": "Diagnostics downloaded (fm1-diagnostic.txt)",
   "FM1 工作台": "FM1 Workbench",
   "工作台": "Workbench",
   "关于": "About",
@@ -4772,7 +4772,7 @@ Public License instead of this License.  But first, please read
 "连接详情": "Détails de connexion",
 "以下是浏览器本次检测到的端口；信息仅显示在本页。": "Voici les ports détectés par le navigateur pour cette tentative ; ces informations restent sur cette page.",
 "更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。": "Pendant la mise à jour, gardez l’alimentation et l’USB branchés ; en cas d’interruption, réessayez avec cette même version de page.",
-"更新帮助": "Aide à la mise à jour",
+"更新帮助": "Aide à la mise à jour","复制诊断信息": "Copier le diagnostic","诊断已复制到剪贴板": "Diagnostic copié dans le presse-papiers","诊断已下载 (fm1-diagnostic.txt)": "Diagnostic téléchargé (fm1-diagnostic.txt)",
 "09 · 更新固件": "09 · Mettre à jour le firmware",
 "正在加载固件…": "Chargement du firmware…",
 "固件校验通过，等待连接设备": "Firmware vérifié ; en attente de la connexion de la pédale",
@@ -5213,8 +5213,8 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
   }
   class Updater {
     constructor(access,pkg,status=()=>{},timing={}) {
-      this.access=access; this.pkg=pkg; this.status=status; this.link=null; this.identity=null; this.busy=false;
-      this.timing={idle:10000,writeIdle:180000,reconnect:40000,settle:600,pace:0,...timing};
+      this.access=access; this.pkg=pkg; this.link=null; this.identity=null; this.busy=false; this.trace=[]; this.waitSeen=[]; this.status=(text,progress)=>{ this.trace.push([Date.now(),String(text),progress===undefined?null:progress]); try{status(text,progress);}catch(_){} };
+      this.timing={idle:10000,writeIdle:300000,reconnect:75000,settle:600,pace:0,...timing};
     }
     async open(pair,signal) {
       try { await portOperation(pair.input,'open',signal); await portOperation(pair.output,'open',signal); }
@@ -5260,6 +5260,7 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
         fail('已找到 MIDI 端口，但设备未回复型号。请关闭其他 MIDI 软件和更新网页，重新开机并插拔 USB 后重试；强制烧录也需要设备先响应。');
       }
       this.link=device.link; this.identity=device.identity;
+      this.trace.push([Date.now(),'identity',this.identity]);
       try {
         if(this.identity===this.pkg.loaderIdentity || (force && /^ota-/i.test(this.identity))) {
           this.mode='loader';return {resume:true,identity:this.identity};
@@ -5300,7 +5301,8 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
           try {device=await this.discover(this.force);}
           catch(error){if(error.code==='AMBIGUOUS')throw error;}
           if(device) {
-            if(device.identity===identity || (legacyLoader && /^ota-/i.test(device.identity))) {
+            if(!this.waitSeen.includes(device.identity))this.waitSeen.push(device.identity);
+            if(device.identity===identity || ((legacyLoader||/^ota/i.test(identity)) && /^ota/i.test(device.identity))) {
               this.link=device.link; this.identity=device.identity; return;
             }
             await device.link.close();
@@ -5334,11 +5336,14 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
           }
           return;
         }
-        check(address<=image.length && bytes<=image.length-address,'设备读取超出固件包范围');
+        const paddedEnd=(image.length+511)&~511;
+        check(address<paddedEnd && bytes<=paddedEnd-address,'设备读取超出固件包范围');
         // The loader requests the next block only when ready. No fixed delay
         // is needed in addition to that request/response flow control.
         last=Date.now(); if(this.timing.pace>0) await sleep(this.timing.pace);
-        this.link.send(frame(48,[p[0],...p.subarray(1,8),...image.subarray(address,address+bytes)]));
+        const block=new Uint8Array(bytes); block.set(image.subarray(address,Math.min(image.length,address+bytes)));
+        this.lastServe={phase,address,bytes,total};
+        this.link.send(frame(48,[p[0],...p.subarray(1,8),...block]));
         // Partial and overlapping reads count each byte once.
         for(let i=address;i<address+bytes;i++) {
           const index=i>>>3,bit=1<<(i&7);
@@ -5383,6 +5388,7 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
         check(this.mode!=='migration','设备已识别；请开启强制烧录并重新连接');
         const original=this.identity;
         const reply=await this.link.query(17);
+        try{this.trace.push([Date.now(),'recheck-identity',ascii(reply)]);}catch(_){}
         check(reply.length===27 && ascii(reply)===original,'设备身份已改变，请重新连接');
         if(this.pkg.kind==='stock')await this.checkFactory();
         if(this.pkg.kind==='stock'&&original==='FM-1_015'){
@@ -5396,6 +5402,7 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
           check(cap.build!==this.pkg.build_id,'设备已经是这个版本');
           const n=this.pkg.image.length, tag=this.pkg.build_id.match(/../g).map(s=>parseInt(s,16));
           const ack=await this.link.query(50,[1,cap.family,n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255,...tag]);
+          try{this.trace.push([Date.now(),'arm-ack',Array.from(ack)]);}catch(_){}
           check(ack.length===1 && ack[0]===0,'设备拒绝此固件包');
           }
           this.status('准备升级程序',0); this.link.send([240,34,36,53,127,247]);
@@ -5881,7 +5888,7 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
       if(updater)await updater.disconnect();
       const access=await requestMidiAccess(report,signal);
       watch(access);
-      updater=new FM1Web.Updater(access,pkg,status);
+      updater=new FM1Web.Updater(access,pkg,status); try{globalThis.FM1_UPDATER=updater; globalThis.FM1_PKG={product:pkg.product,release_version:pkg.release_version,build_id:pkg.build_id,bytes:pkg.bytes,loaderIdentity:pkg.loaderIdentity,kind:pkg.kind};}catch(_){}
       attemptUpdater=updater;
       const device=await updater.connect({force:$('force-update').checked,signal}); connected=true;same=!!device.same;migration=!!device.migration;forceSuggested=migration;
       $('device-identity').textContent=device.identity;
@@ -7222,4 +7229,25 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
 
 </script>
 <script>(()=>{try{if(/update/i.test(location.hash)){const b=document.getElementById("mode-update");if(b)b.click();}}catch(_){}})();</script>
+<script>(()=>{ try{
+  const btn=document.getElementById('copy-diagnostics');
+  if(!btn) return;
+  btn.addEventListener('click', async ()=>{
+    const out={url:location.href, time:new Date().toISOString(), ua:navigator.userAgent, page:'RIDDIM_BOX installer'};
+    try{
+      const u=globalThis.FM1_UPDATER;
+      if(u){ out.mode=u.mode||null; out.identity=u.identity||null; out.force=!!u.force;
+        out.waitSeen=[...new Set(u.waitSeen||[])]; out.trace=(u.trace||[]).slice(-400);
+        out.lastServe=u.lastServe||null; out.diagnostics=u.diagnostics||null; }
+      else out.updater='not-created-yet';
+      const p=globalThis.FM1_PKG||globalThis.FM1_PACKAGE;
+      if(p) out.pkg={product:p.product,release_version:p.release_version,build_id:p.build_id,bytes:p.bytes,loader_sha256:p.loader_sha256};
+    }catch(e){ out.error=String(e&&e.message||e); }
+    const text=JSON.stringify(out,null,1);
+    const st=document.getElementById('status');
+    const done=k=>{ if(st&&globalThis.FM1I18n)FM1I18n.text(st,k); else if(st)st.textContent=k; };
+    try{ await navigator.clipboard.writeText(text); done('诊断已复制到剪贴板'); }
+    catch(_){ try{ const a=document.createElement('a'); const url=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.href=url; a.download='fm1-diagnostic.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000); done('诊断已下载 (fm1-diagnostic.txt)'); }catch(e2){ done(String(e2&&e2.message||e2)); } }
+  });
+}catch(_){}})();</script>
 </html>
