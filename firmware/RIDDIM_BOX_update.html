@@ -92,7 +92,7 @@ button{border-radius:7px;background:#223039;border-color:#3b4b54;color:#d6e3e6;f
 </div>
 </section>
 <section id="tab-update" role="tabpanel" aria-labelledby="mode-update" hidden>
-<h2>更新固件</h2><p id="update-intro">正在校验本页内置固件。请连接 FM1 的 USB-MIDI 接口。</p><div class="fr-notice" lang="fr"><p><strong>Compatible avec toutes les pédales FM-1 d’origine : V14, V15 et V16.</strong> La « version » affichée ci-dessous (V14) est celle de la base du firmware RIDDIM BOX — elle n’a pas d’importance : le flash remplace entièrement le firmware de la pédale, quelle que soit sa version actuelle (V16 incluse).</p><ol><li>Utilisez <strong>Chrome ou Edge</strong> sur PC (pas Firefox ni Safari). Si le navigateur demande l’autorisation <em>MIDI / SysEx</em>, acceptez-la.</li><li>Pédale <strong>allumée</strong> branchée en USB : cliquez <strong>« Connecter la pédale »</strong>, puis choisissez le FM1 dans la fenêtre du navigateur.</li><li>Cochez la case de sauvegarde, puis <strong>« Commencer la mise à jour »</strong>, et confirmez. L’écriture dure quelques minutes — ne débranchez rien.</li><li>Si le message « autre firmware détecté » apparaît (pédale en V16 ou V15), c’est normal : cliquez <strong>« Activer le flash forcé et reconnecter »</strong>, recochez la sauvegarde, puis <strong>« Flash forcé »</strong> et confirmez le risque. C’est la procédure normale de migration.</li></ol><p>Après l’installation, la pédale affiche <strong>RIDDIM BOX</strong> à l’allumage. Pour revenir au firmware d’origine V15, utilisez « Réinstaller le V15 d’origine ».</p></div>
+<h2>更新固件</h2><p id="update-intro">正在校验本页内置固件。请连接 FM1 的 USB-MIDI 接口。</p><div class="fr-notice" lang="fr"><p><strong>Compatible avec toutes les pédales FM-1 d’origine : V14, V15 et V16.</strong> La « version » affichée ci-dessous (V14) est celle de la base du firmware RIDDIM BOX — elle n’a pas d’importance : le flash remplace entièrement le firmware de la pédale, quelle que soit sa version actuelle (V16 incluse).</p><ol><li>Utilisez <strong>Chrome ou Edge</strong> sur PC (pas Firefox ni Safari). Si le navigateur demande l’autorisation <em>MIDI / SysEx</em>, acceptez-la.</li><li>Pédale <strong>allumée normalement</strong> (écran d’accueil habituel — pas le mode mise à jour manuel) branchée en USB : cliquez <strong>« Connecter la pédale »</strong>, puis choisissez le FM1 dans la fenêtre du navigateur. Si la pédale reste bloquée sur un écran d’attente de mise à jour, éteignez-la complètement et rallumez-la avant de connecter : c’est cette page qui déclenche le mode mise à jour, aucun bouton de la pédale n’intervient.</li><li>Cochez la case de sauvegarde, puis <strong>« Commencer la mise à jour »</strong>, et confirmez. L’écriture dure quelques minutes — ne débranchez rien.</li><li>Si le message « autre firmware détecté » apparaît (pédale en V16 ou V15), c’est normal : cliquez <strong>« Activer le flash forcé et reconnecter »</strong>, recochez la sauvegarde, puis <strong>« Flash forcé »</strong> et confirmez le risque. C’est la procédure normale de migration.</li></ol><p>Après l’installation, la pédale affiche <strong>RIDDIM BOX</strong> à l’allumage. Pour revenir au firmware d’origine V15, utilisez « Réinstaller le V15 d’origine ».</p></div>
 <dl><dt>固件</dt><dd id="profile">正在校验…</dd><dt>版本</dt><dd id="firmware-version"></dd></dl>
 <details class="technical-details"><summary>固件详情</summary><dl><dt>文件大小</dt><dd id="size"></dd><dt>构建编号</dt><dd><code id="version"></code></dd></dl></details>
 <label class="update-choice"><input id="backup" type="checkbox"> 已保存需要保留的音色、工程和采样</label>
@@ -106,6 +106,7 @@ button{border-radius:7px;background:#223039;border-color:#3b4b54;color:#d6e3e6;f
 <progress id="progress" value="0" max="100" aria-label="更新进度"></progress>
 <p id="error" role="alert"></p>
 <details id="connection-details" hidden><summary>连接详情</summary><p>以下是浏览器本次检测到的端口；信息仅显示在本页。</p><p><strong>MIDI IN</strong></p><ul id="connection-inputs"></ul><p><strong>MIDI OUT</strong></p><ul id="connection-outputs"></ul><ul id="connection-attempts"></ul></details>
+<div id="diag-fail" hidden><p><strong>La mise à jour a échoué.</strong> Pour analyse, copiez le texte ci-dessous (« Copier le diagnostic ») et collez-le dans la conversation. / Update failed — copy the text below and paste it into the chat.</p><textarea id="diag-fail-text" readonly rows="12" spellcheck="false" style="width:100%;font:11px/1.45 Consolas,'Liberation Mono',monospace;color:#cfe3d8;background:#101614;border:1px solid #343e3d;border-radius:8px;padding:8px;white-space:pre"></textarea><p><button id="diag-fail-copy" type="button">Copier le diagnostic</button></p></div>
 <small>更新期间保持供电和 USB 连接，中断后请用同一版本网页重试。</small><p><a href="#manual-update">更新帮助</a> · <button id="copy-diagnostics" type="button">复制诊断信息</button></p>
 </section>
 <section id="tab-library" role="tabpanel" aria-labelledby="mode-library" hidden>
@@ -4686,6 +4687,7 @@ Public License instead of this License.  But first, please read
   "准备升级程序": "Preparing the updater",
   "等待升级设备重新连接": "Waiting for the update device to reconnect",
   "写入固件": "Writing firmware",
+  "已连接升级模式；开始更新后将自动写入所需的升级程序和固件。": "Connected in update mode; starting the update will write the required updater and firmware automatically.",
   "重启并核对新版本": "Restarting and verifying the new version",
   "设备已重启，但固件版本校验不一致": "Device restarted, but firmware version verification failed",
   "更新完成": "Update complete",
@@ -4794,6 +4796,7 @@ Public License instead of this License.  But first, please read
 "已识别设备和当前固件；迁移请点击“启用强制烧录并重新连接”。": "Pédale et firmware actuels reconnus ; pour migrer, cliquez « Activer le flash forcé et reconnecter ».",
 "已是当前版本，无需更新。": "Version déjà installée ; aucune mise à jour nécessaire.",
 "已连接升级模式，可继续写入这个版本": "Connecté en mode mise à niveau ; l’écriture peut reprendre",
+"已连接升级模式；开始更新后将自动写入所需的升级程序和固件。": "Connecté en mode mise à niveau ; le lancement écrira automatiquement le programmateur requis puis le firmware.",
 "已连接原厂 V15，可恢复出厂音色。": "V15 d’origine connecté ; les sons d’usine peuvent être restaurés.",
 "已连接；开始强制烧录前将再次确认设备和兼容风险。": "Connecté ; l’appareil et les risques de compatibilité seront confirmés avant le flash forcé.",
 "尚未连接": "Pas encore connecté",
@@ -5262,8 +5265,14 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
       this.link=device.link; this.identity=device.identity;
       this.trace.push([Date.now(),'identity',this.identity]);
       try {
-        if(this.identity===this.pkg.loaderIdentity || (force && /^ota-/i.test(this.identity))) {
+        if(this.identity===this.pkg.loaderIdentity) {
           this.mode='loader';return {resume:true,identity:this.identity};
+        }
+        if(force && /^ota-/i.test(this.identity)) {
+          // A different-generation updater is already running (for example
+          // ota-FM-1_016 on recent pedals). Do not assume it behaves like the
+          // package loader; the serve loop adapts to whatever the device reads.
+          this.mode='loader-foreign';return {resume:false,identity:this.identity,foreign:true};
         }
         if(!force && this.identity!==this.pkg.product && !openIdentity(this.identity)) {
           this.mode='migration';return {identity:this.identity,migration:true};
@@ -5280,8 +5289,11 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
           // Some third-party identities share Open's numeric prefix. A missing
           // capability reply requires explicit migration, never a silent flash.
           // Malformed replies and disconnected ports remain errors.
-          if(error.code!=='TIMEOUT' || this.link.lost)throw error;
+          if(!force && (error.code!=='TIMEOUT' || this.link.lost))throw error;
           if(!force){this.mode='migration';return {identity:this.identity,migration:true};}
+          if(error.code!=='TIMEOUT')try{this.trace.push([Date.now(),'capability-fallback',String(error&&error.message||error)]);}catch(_){}
+          // Force was confirmed: fall back to the plain two-stage flow instead
+          // of blocking newer devices whose capability reply differs.
           this.mode='legacy';return {resume:false,identity:this.identity,legacy:true};
         }
         if(!force && cap.family!==this.pkg.family) {
@@ -5313,8 +5325,10 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
       fail('等待设备重连超时；请保留这个更新网页，重新连接同一台设备后重试');
     }
     async serve(finish,idle,phase) {
+      const finishes=Array.isArray(finish)?finish:[finish];
       const image=this.pkg.image, covered=new Uint8Array(Math.ceil(image.length/8));
       const started=Date.now(); let last=started,total=0;
+      if(this.pstats)this.prevServe={phase:(this.lastServe&&this.lastServe.phase)||null,pstats:this.pstats,plog:(this.plog||[]).slice(-240)};
       this.plog=[]; this.pstats={served:0,newpkts:0,rereads:0,cmdOther:{},odd:[]}; this.lastGrowth=Date.now();
       for(;;) {
         check(Date.now()-started<Math.max(idle*6,1800000),'升级超过最长等待时间，尚未完成');
@@ -5322,29 +5336,39 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
         const packet=await this.link.read(250);
         if(!packet) { check(!this.link.lost,'USB 意外断开；重新连接同一设备后用此网页重试'); check(Date.now()-last<idle,'设备停止请求数据，升级未完成'); continue; }
         if(packet.command!==48){const co=this.pstats.cmdOther;co[packet.command]=(co[packet.command]||0)+1;if(this.pstats.odd.length<20)this.pstats.odd.push({c:packet.command,l:packet.data?packet.data.length:0,h:packet.data?[...packet.data.subarray(0,12)]:[]});continue;}
-        if(packet.data.length!==8&&this.pstats.odd.length<20)this.pstats.odd.push({c:48,l:packet.data.length,h:[...packet.data.subarray(0,12)]});
-        if(packet.data.length<8) continue;
-        const p=packet.data, address=le(p,1,4), bytes=le(p,5,3);
-        check(bytes>0 && bytes<=512,'设备请求长度无效');
-        this.pstats.served++;
-        const isFin=(address===0xe0000000||address===0xf0000000);
-        const isNew=!isFin && address<image.length && !(covered[address>>>3]&(1<<(address&7)));
-        this.plog.push([Date.now()-started,address,bytes,total,isFin?2:(isNew?1:0)]);
-        if(this.plog.length>240)this.plog.shift();
-        if(isNew){this.pstats.newpkts++;this.lastGrowth=Date.now();} else if(!isFin){this.pstats.rereads++;}
-        if(address===0xe0000000 || address===0xf0000000) {
-          check(address===finish,'设备的升级阶段不匹配');
-          this.link.send(frame(48,[p[0],p[1]??0,p[2]??0,p[3]??0,p[4]??0,p[5]??0,p[6]??0,p[7]??0,115,117,99,99,101,115,115,0]));
+        const pd=packet.data;
+        // Completion requests are validated by address alone: newer updater
+        // generations send them with a zero or unusual length field, so the
+        // length sanity check below must never reject them.
+        if(pd.length>=5 && (le(pd,1,4)===0xe0000000 || le(pd,1,4)===0xf0000000)) {
+          const address=le(pd,1,4);
+          check(finishes.includes(address),'设备的升级阶段不匹配');
+          this.pstats.served++;
+          this.plog.push([Date.now()-started,address,le(pd,5,3),total,2]);
+          if(this.plog.length>240)this.plog.shift();
+          const head=new Uint8Array(8); head.set(pd.subarray(0,Math.min(8,pd.length)));
+          this.link.send(frame(48,[...head,115,117,99,99,101,115,115,0]));
           // Web MIDI send queues bytes; leave the port open for the completion
           // response and bounded duplicate finish requests before disconnecting.
           const end=Date.now()+this.timing.settle;
           while(Date.now()<end && !this.link.lost) {
             const again=await this.link.read(Math.min(100,end-Date.now()));
-            if(again && again.command===48 && again.data.length>=8 && le(again.data,1,4)===finish)
-              this.link.send(frame(48,[again.data[0],again.data[1]??0,again.data[2]??0,again.data[3]??0,again.data[4]??0,again.data[5]??0,again.data[6]??0,again.data[7]??0,115,117,99,99,101,115,115,0]));
+            if(again && again.command===48 && again.data.length>=5 && finishes.includes(le(again.data,1,4))) {
+              const h2=new Uint8Array(8); h2.set(again.data.subarray(0,Math.min(8,again.data.length)));
+              this.link.send(frame(48,[...h2,115,117,99,99,101,115,115,0]));
+            }
           }
-          return;
+          return address;
         }
+        if(pd.length!==8&&this.pstats.odd.length<20)this.pstats.odd.push({c:48,l:pd.length,h:[...pd.subarray(0,12)]});
+        if(pd.length<8) continue;
+        const p=pd, address=le(p,1,4), bytes=le(p,5,3);
+        check(bytes>0 && bytes<=512,'设备请求长度无效');
+        this.pstats.served++;
+        const isNew=address<image.length && !(covered[address>>>3]&(1<<(address&7)));
+        this.plog.push([Date.now()-started,address,bytes,total,isNew?1:0]);
+        if(this.plog.length>240)this.plog.shift();
+        if(isNew){this.pstats.newpkts++;this.lastGrowth=Date.now();} else {this.pstats.rereads++;}
         const paddedEnd=(image.length+511)&~511;
         check(address<paddedEnd && bytes<=paddedEnd-address,'设备读取超出固件包范围');
         // The loader requests the next block only when ready. No fixed delay
@@ -5388,6 +5412,20 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
       }
       check(ascii(await this.link.query(17))==='FM-1_015','恢复音色需要原厂 V15');
     }
+    async finalVerify() {
+      this.status('重启并核对新版本',99);
+      await this.waitFor(this.pkg.product);
+      if(this.pkg.kind==='stock') {
+        // Stock firmware has no build-hash capability. Verify its identity
+        // again after reconnect; do not claim a hash read-back it cannot do.
+        check(ascii(await this.link.query(17))===this.pkg.product,'设备已重启，但固件版本校验不一致');
+        await this.restoreFactory();
+      } else {
+        const after=capability(await this.link.query(49));
+        check(after.family===this.pkg.family && after.build===this.pkg.build_id && after.state===0,'设备已重启，但固件版本校验不一致');
+      }
+      this.status('更新完成',100);
+    }
     async install({force=false}={}) {
       check(this.link && !this.busy,'请先连接设备'); this.busy=true;
       let failure;
@@ -5403,7 +5441,7 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
         if(this.pkg.kind==='stock'&&original==='FM-1_015'){
           await this.restoreFactory();this.status('更新完成',100);return;
         }
-        if(this.mode!=='loader') {
+        if(this.mode!=='loader' && this.mode!=='loader-foreign') {
           // Recheck immediately before arming; a stale Connect result is insufficient.
           if(this.mode==='tagged') {
           const cap=capability(await this.link.query(49));
@@ -5412,27 +5450,40 @@ const FM1_PACKAGE = {"schema":1,"product":"FM-1_8000014","profile":"dx7","family
           const n=this.pkg.image.length, tag=this.pkg.build_id.match(/../g).map(s=>parseInt(s,16));
           const ack=await this.link.query(50,[1,cap.family,n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255,...tag]);
           try{this.trace.push([Date.now(),'arm-ack',Array.from(ack)]);}catch(_){}
-          check(ack.length===1 && ack[0]===0,'设备拒绝此固件包');
+          if(!(ack.length===1 && ack[0]===0)){
+            // A refusal only blocks the normal tagged flow. With force the
+            // confirmed two-stage write is still attempted and the device's
+            // own requests decide what happens.
+            if(!force)check(false,'设备拒绝此固件包');
+            try{this.trace.push([Date.now(),'arm-rejected-force',Array.from(ack)]);}catch(_){}
+          }
           }
           this.status('准备升级程序',0); this.link.send([240,34,36,53,127,247]);
-          await this.serve(0xe0000000,this.timing.idle,'准备升级程序');
-          await this.disconnect(); this.status('等待升级设备重新连接',0);
+          // Adaptive: a device that skips the updater stage completes with
+          // 0xf0000000 and the app write is already done.
+          const first=await this.serve([0xe0000000,0xf0000000],this.timing.idle,'准备升级程序');
+          try{this.trace.push([Date.now(),'stage1-finish',String(first)]);}catch(_){}
+          await this.disconnect();
+          if(first===0xf0000000){this.status('重启并核对新版本',99);return this.finalVerify();}
+          this.status('等待升级设备重新连接',0);
           await this.waitFor(this.pkg.loaderIdentity,this.mode==='legacy'||this.pkg.kind==='stock');
         }
         this.status('写入固件',0); this.link.send([240,34,36,53,127,247]);
-        await this.serve(0xf0000000,this.timing.writeIdle,'写入固件');
-        await this.disconnect(); this.status('重启并核对新版本',99);
-        await this.waitFor(this.pkg.product);
-        if(this.pkg.kind==='stock') {
-          // Stock firmware has no build-hash capability. Verify its identity
-          // again after reconnect; do not claim a hash read-back it cannot do.
-          check(ascii(await this.link.query(17))===this.pkg.product,'设备已重启，但固件版本校验不一致');
-          await this.restoreFactory();
-        } else {
-          const after=capability(await this.link.query(49));
-          check(after.family===this.pkg.family && after.build===this.pkg.build_id && after.state===0,'设备已重启，但固件版本校验不一致');
+        // The running updater may be a stage-one reader (wants ota.bin and
+        // finishes with 0xe0000000) or a stage-two reader (flash.bin and
+        // 0xf0000000). Accept whichever completion the device reports.
+        const staged=await this.serve([0xf0000000,0xe0000000],this.timing.writeIdle,'写入固件');
+        try{this.trace.push([Date.now(),'write-finish',String(staged)]);}catch(_){}
+        await this.disconnect();
+        if(staged===0xe0000000) {
+          // The device only took the updater program; it reboots into it now.
+          this.status('等待升级设备重新连接',0);
+          await this.waitFor(this.pkg.loaderIdentity,true);
+          this.status('写入固件',0); this.link.send([240,34,36,53,127,247]);
+          await this.serve(0xf0000000,this.timing.writeIdle,'写入固件');
+          await this.disconnect();
         }
-        this.status('更新完成',100);
+        return this.finalVerify();
       } catch(error) {failure=error;throw error;}
       finally {
         this.busy=false;
@@ -5901,7 +5952,7 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
       attemptUpdater=updater;
       const device=await updater.connect({force:$('force-update').checked,signal}); connected=true;same=!!device.same;migration=!!device.migration;forceSuggested=migration;
       $('device-identity').textContent=device.identity;
-      status(pkg.kind==='stock'&&device.identity==='FM-1_015'?'已连接原厂 V15，可恢复出厂音色。':migration?'已识别设备和当前固件；迁移请点击“启用强制烧录并重新连接”。':same?'已是当前版本，无需更新。':$('force-update').checked?'已连接；开始强制烧录前将再次确认设备和兼容风险。':device.resume?'已连接升级模式，可继续写入这个版本':'已连接 FM1，可开始更新');
+      status(pkg.kind==='stock'&&device.identity==='FM-1_015'?'已连接原厂 V15，可恢复出厂音色。':migration?'已识别设备和当前固件；迁移请点击“启用强制烧录并重新连接”。':same?'已是当前版本，无需更新。':device.foreign?'已连接升级模式；开始更新后将自动写入所需的升级程序和固件。':$('force-update').checked?'已连接；开始强制烧录前将再次确认设备和兼容风险。':device.resume?'已连接升级模式，可继续写入这个版本':'已连接 FM1，可开始更新');
       connectionNotice=undefined;
     }catch(error){connectionNotice={message:error.message,failed:true};showConnectionDetails(attemptUpdater?.diagnostics);forceSuggested=error.code==='FIRMWARE_MISMATCH';FM1I18n.text($('error'),error.message);status('尚未连接');if(error.identity)$('device-identity').textContent=error.identity;}
     finally{await endConnection(attempt);busy=false;enable();}
@@ -6119,6 +6170,8 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
     if(!confirm(FM1I18n.t('替换此组全部 32 个音色？建议先导出此组备份。')))return;
     bankSlots(await library.writeBank(group,raw));message('整组音色已写入，读回校验通过。');
   }));
+  async function diagSnapshot(){try{return await globalThis.FM1_DIAGNOSTIC_JSON();}catch(_){return JSON.stringify({page:'RIDDIM_BOX installer',lastError:globalThis.FM1_LASTERROR||null},null,1);}}
+  function showFailDiag(){const box=$('diag-fail');if(!box)return;diagSnapshot().then(text=>{try{$('diag-fail-text').value=text;box.hidden=false;}catch(_){}}).catch(()=>{});}
   $('install').addEventListener('click',async()=>{
     if(busy||finishingUpdate||!connected||migration||same||!$('backup').checked)return;
     const force=$('force-update').checked;
@@ -6127,7 +6180,7 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
     busy=true;writing=true;enable();FM1I18n.text($('error'),'');
     let completed=false;
     try{await updater.install({force});completed=true;}
-    catch(error){try{globalThis.FM1_LASTERROR=(error&&error.message)||String(error);}catch(_){}FM1I18n.text($('error'),error.message);status('升级未完成；请保留本网页，检查设备连接后重试');}
+    catch(error){try{globalThis.FM1_LASTERROR=(error&&error.message)||String(error);}catch(_){}FM1I18n.text($('error'),error.message);status('升级未完成；请保留本网页，检查设备连接后重试');showFailDiag();}
     finally{busy=false;writing=false;connected=false;finishingUpdate=completed;$('device-identity').textContent=completed?pkg.product:'';enable();}
     if(completed&&pkg.kind==='stock'){
       updateResult='stock';finishingUpdate=false;status('原厂 V15 和 128 个出厂音色已恢复。请切换音色试听。',100);enable();
@@ -7239,24 +7292,40 @@ const FM1_SIMULATOR = {"schema":1,"release_version":"V14","sha256":"864b4b410167
 </script>
 <script>(()=>{try{if(/update/i.test(location.hash)){const b=document.getElementById("mode-update");if(b)b.click();}}catch(_){}})();</script>
 <script>(()=>{ try{
-  const btn=document.getElementById('copy-diagnostics');
-  if(!btn) return;
-  btn.addEventListener('click', async ()=>{
+  const build=async ()=>{
     const out={url:location.href, time:new Date().toISOString(), ua:navigator.userAgent, page:'RIDDIM_BOX installer'};
     try{
       const u=globalThis.FM1_UPDATER;
       if(u){ out.mode=u.mode||null; out.identity=u.identity||null; out.force=!!u.force;
         out.waitSeen=[...new Set(u.waitSeen||[])]; out.trace=(u.trace||[]).slice(-400);
-        out.lastServe=u.lastServe||null; out.diagnostics=u.diagnostics||null; out.pstats=u.pstats||null; out.plog=(u.plog||[]).slice(-240); out.lastGrowthAgoMs=u.lastGrowth?(Date.now()-u.lastGrowth):null; out.lastError=globalThis.FM1_LASTERROR||null; }
+        out.lastServe=u.lastServe||null; out.prevServe=u.prevServe||null; out.diagnostics=u.diagnostics||null; out.pstats=u.pstats||null; out.plog=(u.plog||[]).slice(-240); out.lastGrowthAgoMs=u.lastGrowth?(Date.now()-u.lastGrowth):null; out.lastError=globalThis.FM1_LASTERROR||null; }
       else out.updater='not-created-yet';
       const p=globalThis.FM1_PKG||globalThis.FM1_PACKAGE;
       if(p) out.pkg={product:p.product,release_version:p.release_version,build_id:p.build_id,bytes:p.bytes,loader_sha256:p.loader_sha256};
     }catch(e){ out.error=String(e&&e.message||e); }
-    const text=JSON.stringify(out,null,1);
-    const st=document.getElementById('status');
-    const done=k=>{ if(st&&globalThis.FM1I18n)FM1I18n.text(st,k); else if(st)st.textContent=k; };
-    try{ await navigator.clipboard.writeText(text); done('诊断已复制到剪贴板'); }
-    catch(_){ try{ const a=document.createElement('a'); const url=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.href=url; a.download='fm1-diagnostic.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000); done('诊断已下载 (fm1-diagnostic.txt)'); }catch(e2){ done(String(e2&&e2.message||e2)); } }
+    return JSON.stringify(out,null,1);
+  };
+  globalThis.FM1_DIAGNOSTIC_JSON=build;
+  const st=document.getElementById('status');
+  const done=k=>{ if(st&&globalThis.FM1I18n)FM1I18n.text(st,k); else if(st)st.textContent=k; };
+  const copyText=async text=>{
+    try{ await navigator.clipboard.writeText(text); return true; }
+    catch(_){ try{ const a=document.createElement('a'); const url=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.href=url; a.download='fm1-diagnostic.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000); return false; }catch(e2){ done(String(e2&&e2.message||e2)); return false; } }
+  };
+  const btn=document.getElementById('copy-diagnostics');
+  if(btn) btn.addEventListener('click', async ()=>{
+    let text; try{text=await build();}catch(e){text=String(e&&e.message||e);}
+    const ok=await copyText(text);
+    done(ok?'诊断已复制到剪贴板':'诊断已下载 (fm1-diagnostic.txt)');
+  });
+  const fc=document.getElementById('diag-fail-copy');
+  if(fc) fc.addEventListener('click', async ()=>{
+    const ta=document.getElementById('diag-fail-text'); if(!ta)return;
+    let text=ta.value; if(!text){try{text=await build();ta.value=text;}catch(_){}}
+    const ok=await copyText(text);
+    fc.textContent=ok?'Copié dans le presse-papiers':'Téléchargé (fm1-diagnostic.txt)';
+    if(!ok){ta.focus();ta.select();}
+    setTimeout(()=>{fc.textContent='Copier le diagnostic';},6000);
   });
 }catch(_){}})();</script>
 </html>
