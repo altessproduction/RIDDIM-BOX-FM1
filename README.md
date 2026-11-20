@@ -12,7 +12,7 @@
 
 Firmware : `firmware/RIDDIM_BOX.fwsc` (483 892 octets)
 SHA-256 : `aaffff6bda64348b8cdc691f9bb85549c409e1c6f51f0a87320d01db34d9b894`
-Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `7df49dedd4319efc3ac519507b9bd493fc70dd1ded8ca144175c6d8072f4b4d6` (interface française, notice V14/V15/V16 intégrée, flux adaptatif deux étages, panneau de diagnostic automatique en cas d'échec)
+Page d'installation : [**⬇ Installer sur votre FM-1**](https://altessproduction.github.io/RIDDIM-BOX-FM1/firmware/RIDDIM_BOX_update.html?lang=fr#update) — SHA-256 `cddda0f05feaa715c7e6a8c898f50946db1cc39c8e4c456cc65a548a35ceac33` (interface française, notice V14/V15/V16 intégrée, paquet officiel M-VAVE à jour `de48badc…` +8 Ko pour les pédales récentes, flux adaptatif deux étages avec repli automatique, panneau de diagnostic automatique en cas d'échec)
 
 ---
 
@@ -165,6 +165,7 @@ Le workbench en ligne de M-VAVE (<https://open.m-vave.com/fm1-workbench>) **n'ac
 4. Le transfert utilise le protocole USB-MIDI officiel avec **vérification CRC** et contrôle de version après redémarrage ; un échec laisse la machine bootable ;
    - **Compatibilité étendue pour les FM1 récents (nouvelle puce)** : le bootloader est désormais reconnu quelle que soit l'identité `ota*` qu'il signale (au lieu d'une identité exacte), les lectures au-delà de la fin de l'image sont complétées par des zéros jusqu'à la frontière de 512 octets, et les délais d'attente sont portés à 75 s (reconnexion) et 300 s (écriture) ;
    - **Flux adaptatif deux étages (Round 3)** : la page accepte maintenant les deux formes de paquet de fin (`0xe0000000` et `0xf0000000`, quelle que soit la valeur du champ longueur — les programmeurs récents l'envoient à zéro), distingue un programmeur étranger déjà en marche (`loader-foreign`) et enchaîne automatiquement l'étage manquant (écrire `ota.bin` puis `flash.bin`, ou l'inverse selon ce que l'appareil demande), tolère une réponse de capacité inconnue ou un refus d'armement quand le flash forcé est confirmé ;
+   - **Paquet officiel à jour + repli automatique (Round 4)** : la page embarque désormais le paquet FM-1 actuel de M-VAVE (`de48badc…`, 492 084 octets — l'app `flash.bin` grandit de 8 192 octets par rapport à l'ancien embarqué, le programmateur `ota.bin` est identique) ; le diagnostic du blocage à ~92 % a montré que le chargeur V16 reçoit l'image complète puis la relit en boucle au lieu de valider — il refuse l'ancien build. La barre de progression suit désormais l'étendue réellement lue par l'appareil ; si le chargeur relit un span entièrement servi sans l'accepter (90 s), la page affiche « Firmware intégralement envoyé… », bascule d'elle-même en flux deux étages (`ota.bin` → reconnexion → `flash.bin`) et n'échoue avec un message précis qu'après cet unique repli ;
    - **Si le flash bloque** : cliquer **« Copier le diagnostic »** dans l'onglet mise à jour — le journal complet (identités détectées, étapes, erreurs MIDI, ports USB) est copié dans le presse-papiers ; le coller dans un retour de bug pour analyse. Un repli télécharge `fm1-diagnostic.txt` si le presse-papiers est bloqué ;
 5. **Retour arrière possible** : la page embarque aussi la V15 d'origine (« Réinstaller le V15 d'origine ») pour revenir au firmware M-VAVE.
 
